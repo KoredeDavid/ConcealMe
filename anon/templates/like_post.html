@@ -1,0 +1,34 @@
+{% load custom_tags %}
+{% load static %}
+    {% liked user message.id as liked %}
+
+
+        {% csrf_token %}
+        {% if liked %}
+            <button class=" button-one button float-left"  style="font-size:24px; color:red; display: inline-block" ><i class="fas fa-heart" id="like{{ message.id }}"></i></button>
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                       $("#body").on("click", "#like{{message.id}}", function(){
+                            $('#like{{message.id}}').toggleClass('fas far');
+                            var request= new XMLHttpRequest();
+                            request.open('POST', "{% url 'anon:like' user message.id %}");
+                            request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                            request.send();
+                        });
+                    });
+                </script>
+        {% else %}
+            <button class=" button-one button float-left"  style="font-size:24px; color:red; display: inline-block" ><i class="far fa-heart" id="like{{ message.id }}"></i></button>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                   $("#body").on("click", "#like{{message.id}}", function(){
+                        $('#like{{message.id}}').toggleClass('far fas');
+                        var request= new XMLHttpRequest();
+                        request.open('POST', "{% url 'anon:like' user message.id %}");
+                        request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                        request.send();
+                    });
+                });
+            </script>
+       {% endif %}
+

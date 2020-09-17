@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{user}} Telegram{% endblock %}
+
+{% block content %}
+<h4 class="text-center mx-auto" style="background-color:white; align-content: center;">👑{{user}} | Telegram <span class="fab fa-telegram-plane fa-lg" style="font-size:24px; color:#0088cc"></span></h4>
+{% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-success alert-dismissible text-center fade show" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                        </div>        
+                                    {% endfor %}
+                                {% endif %}
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $(".alert").delay(4000).slideUp(200, function() {
+                                            $(this).alert('close');
+                                        });
+                                    });
+                                </script>
+
+<div id="body" style="background-color:white; padding-top:30px">    
+    {% if zero %}
+        <h5 class="text-center">To activate your telegram in order to receive your anonymous messages just follow the simple steps below</h5>
+        <div id="accordion">            
+            <div class="row">
+                <div class="col-sm-5 mx-auto">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <span class="mb-0">
+                    <span class="fab fa-telegram-plane" style=" color: red"></span>
+                    <button class="btn btn-primary" >
+                        STEP #1
+                    </button>
+                </span>
+              </div>
+          
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+
+                 <b> Skip to <a href="#headingTwo"  >
+                    Step #2
+                 </a> If you already have the telegram app and a telegram account. if not
+                  Download the telegram app for Android or IOS and open an account if you don't have one<br>
+                 </b>
+                </div>
+              </div>
+            </div>
+            </div>
+            </div>
+            <div class="row mt-5 mb-5">
+                <div class="col-sm-5 mx-auto">
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <span class="fab fa-telegram-plane" style=" color: red"></span>
+                  <button class="btn btn-primary " >
+                    STEP #2
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTwo"  >
+                <div class="card-body">
+                    Send your unique ID <b>{{id}}</b> (simply click on it to copy) to <a href="https://t.me/korededavidbot"> Telegram korededavidbot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span>. Please never ever share this with any one.
+                    <br>
+                  You will receive a welcome response.... Enjoy
+                </div>
+              </div>
+            </div>
+            </div>
+            </div>
+           
+          </div>
+
+    {% endif %}
+
+    {% if not zero and not switch %}
+        <form  action="{% url 'anon:activate' user %}" style="padding-bottom: 30px ; display: inline-block;" method="post">
+        <b> Your telegram is deactivated <span class="fab fa-telegram-plane" style=" color: red"></span></b>
+        &nbsp; &nbsp;
+            {% csrf_token %}
+            <button class="btn btn-primary" id="activate" >Activate</button>
+        </form>
+        <div style="display: inline-block;" id="loader"></div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#body").on("click", "#activate", function(){
+                    $("#activate").hide(1);
+                    $("#loader").replaceWith( (' <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>') );
+                });
+            });
+        </script>
+
+<hr>
+        <div >You receive <b>{{choice}}</b> messages per notifaction on telegram, edit the amount below</div><br>
+      <form style="padding-bottom :30px; display: inline-block;" action="{% url 'anon:choice' user %}" method="post" >
+          {% csrf_token %}
+          <label for="id_telegram_choice">Telegram choice:</label>
+          <select name="telegram_choice" class="custom-select col-sm-4" id="id_telegram_choice" >
+                <option value="{{choice}}" selected="">Oya Pick</option>
+
+                <option value="1">One</option>
+
+                    <option value="2">Two</option>
+
+                <option value="3" >Three</option>
+
+                <option value="4">Four</option>
+
+                <option value="5">Five</option>
+          </select> &nbsp; &nbsp;
+          <button class="btn btn-primary" id="choice" type="submit">Apply</button>
+         <div style="display: inline-block;" id="choice_loader"></div>
+      </form>
+      <script type="text/javascript">
+          $(document).ready(function() {
+              $("#body").on("click", "#choice", function(){
+                  $("#choice").hide(1);
+                  $("#choice_loader").replaceWith( (' <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>') );
+              });
+          });
+      </script>
+      <hr>
+      <div class="row" >
+          <div class="col-sm-10 ">
+
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <span class="fab fa-telegram-plane" style=" color: red"></span>
+                <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    CHANGE TELEGRAM ACCOUNT
+                </button>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+
+             To change your telegram account simply send your unique ID <b>{{id}} </b> (simply click on it to copy) to <a href="https://t.me/korededavidbot"> Telegram korededavidbot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span> with your new telegram account . Please never ever share this with any one.
+
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+    {% endif %}
+
+    {% if not zero and  switch %}
+
+    <form action="{% url 'anon:deactivate' user %}" style="padding-bottom: 30px ; display: inline-block;" method="post">
+      <b> Your telegram is active <span class="fab fa-telegram-plane" style=" color: #0088cc"></span></b>
+      &nbsp; &nbsp;
+          {% csrf_token %}
+          <button class="btn btn-danger" id="deactivate" >Deactivate</button>
+      </form>
+      <div style="display: inline-block;" id="loader"></div>
+      <script type="text/javascript">
+          $(document).ready(function() {
+              $("#body").on("click", "#deactivate", function(){
+                  $("#deactivate").hide(1);
+                  $("#loader").replaceWith( (' <div class="spinner-grow text-danger" role="status"><span class="sr-only">Loading...</span></div>') );
+              });
+          });
+      </script>
+
+<hr>
+
+      <form style="padding-bottom :30px; display: inline-block;" action="{% url 'anon:choice' user %}" method="post" >
+<div >You receive <b>{{choice}}</b> messages per notification on telegram, edit the amount below</div><br>
+          {% csrf_token %}
+          <label for="id_telegram_choice">Telegram choice:</label>
+          <select name="telegram_choice" class="custom-select col-sm-4" id="id_telegram_choice" >
+                <option value="{{choice}}" selected="">Oya Pick</option>
+
+                <option value="1">One</option>
+
+                    <option value="2">Two</option>
+
+                <option value="3" >Three</option>
+
+                <option value="4">Four</option>
+
+                <option value="5">Five</option>
+          </select> &nbsp; &nbsp;
+          <button class="btn btn-primary mt-1" id="choice" type="submit">Apply</button>
+         <div style="display: inline;" id="choice_loader"></div>
+      </form>
+      <script type="text/javascript">
+          $(document).ready(function() {
+              $("#body").on("click", "#choice", function(){
+                  $("#choice").hide(1);
+                  $("#choice_loader").replaceWith( (' <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>') );
+              });
+          });
+      </script>
+      <hr>
+      <div class="row" >
+          <div class="col-sm-10 ">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+              <span class="fab fa-telegram-plane" style=" color: red"></span>
+              <span class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  CHANGE TELEGRAM ACCOUNT
+              </span>
+          </h5>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+
+           To change your telegram account simply send your unique ID <b>{{id}} </b> (simply click on it to copy) to <a href="https://t.me/korededavidbot"> Telegram korededavidbot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span> with your new telegram account . Please never ever share this with any one.
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+    {% endif %}
+    </div>
+
+{% endblock %}
+

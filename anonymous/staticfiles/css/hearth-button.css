@@ -1,0 +1,107 @@
+body {
+    background-image: url("/static/images/background.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+}
+
+.dashone {
+    -webkit-tap-highlight-color: transparent;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: black;
+    font-family: Poppins-Regular,sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: auto !important;
+    min-height: 0px !important;
+}
+
+.dashtwo {
+    -webkit-tap-highlight-color: transparent;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: black;
+    font-family: Poppins-Regular,sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    width: 500px;
+
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 42px 20px 45px 20px;
+    height: auto !important;
+}
+
+.dashthree {
+    -webkit-tap-highlight-color: transparent;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: black;
+    font-family: Poppins-Regular,sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dashcard {
+    -webkit-tap-highlight-color: transparent;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 2;
+    font-family: Poppins-Regular,sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    background: white;
+    color: black;
+    padding: 15px 10px 10px 12px;
+    border-radius: 10px;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #5fdee2;
+}
+
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.3s;
+}
+
+button:focus {
+  outline: 0;
+}
+
+button {
+  padding: 5px;
+  margin: 5px;
+/*   outline: 1px dotted black; */
+}
+
+.button-one:hover {
+  opacity: 1;
+  color: #FF6347;
+}
+
+.button-one:active {
+  text-shadow: 2px 2px 8px #FF0000;
+}
+
+

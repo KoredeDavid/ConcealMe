@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\css\bootstrap.min.css' %}">
+        <link href="{%  static 'images/download.png' %}" rel="icon">
+        <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
+        <link rel="stylesheet" href="{% static 'css/hearth-button.css' %}">
+        <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <script type="text/javascript" src="{% static '\js\jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\js\bootstrap.min.js' %}"></script>
+
+    <body>
+
+        <div id="wrap">
+            <div class = 'container' >
+                <nav  class="navbar navbar-light navbar-expand py-o bg-light justify-content-center fixed-top">
+                    <div class="container py-o">
+                        <ul class="navbar-nav nav-justified w-100 text-center mt-1">
+                            <li class="nav-item">
+                                <a href=" {% url 'anon:home' %}" class="nav-link py-0 d-flex flex-column" >
+                                    <span class="fa  fa-lg" ><img style="width:28px; height:28px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></span>
+                                     <span class="d-none d-sm-inline mt-1">Anonymous</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href=" {% url 'anon:dashboard' user %}" class="nav-link py-0 d-flex flex-column">
+                                    <span class="fas fa-home fa-lg" style="font-size:24px;" ></span>
+                                    <span class="d-none d-sm-inline mt-1">{{user}} Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href=" {% url 'anon:telegram' user %}" class="nav-link py-0 d-flex flex-column" >
+                                    <span class="fab fa-telegram-plane fa-lg" style="font-size:24px; color:#0088cc"></span>
+                                    <span class="d-none d-sm-inline mt-1">Telegram</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'anon:favourites' user %}" class="nav-link py-0 d-flex flex-column" >
+                                    <span class="fas fa-heart fa-lg" style="font-size:24px; color:red"></span>
+                                    <span class="d-none d-sm-inline mt-1">Favourites</span>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-center d-flex py-0 flex-column" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="fas fa-cog fa-lg" style="font-size:24px;"></span>
+                                    <span class="d-none d-sm-inline px-1 mt-1">settings <small>▼</small></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'anon:update' user %}">Update Profile</a>
+                                    <a class="dropdown-item" href="{% url 'anon:password' user %}">Change Password</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'anon:archive_list' user %}">View Archives</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'anon:sign_out' %}" class="nav-link py-0 d-flex flex-column" >
+                                    <span class="fas fa-sign-out-alt fa-lg" style="font-size:24px;"></span>
+                                    <span class="d-none d-sm-inline mt-1">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div  style="padding-top: 90px">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div id="push"></div>
+        </div>
+        <div id="footer" style="padding-top:70px" >
+            <footer class="fixed-botto page-foote font-smal cya darken-"   style="background-color:  white;  ">
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-md-3 text-center mx-auto  py-">
+                            <div class="mb-1 text-center mx-auto">
+                                &nbsp;<small style="font-size: 7px;" class="py-"><b> 👑KoredeDavid </b></small>
+                                &nbsp;
+                                <a href="https://facebook.com/kingkorededavid">  <i class="fab fa-facebook fa-lg white-text" style="font-size:18px;"></i></a> &nbsp;
+                                <a href="https://twitter.com/kingkorededavid"><i class="fab fa-twitter fa-lg white-text" style="font-size:20px;"> </i></a> &nbsp;
+                                <a href="https://instagram.com/kingkorededavid"><i class="fab fa-instagram fa-lg white-text" style="font-size:20px;"> </i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background-color: 	#D3D3D3;" class="footer-copyright mx-auto text-center py-">© 2020 Copyright:
+                  <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+                </div>
+            </footer>
+        </div>
+    </body>
+
+</html>
+
+
+<!--
+ <nav class="navbar  navbar-expand navbar-expand-lg navbar-light bg-light shadow fixed-top">
+             <div class="container ">
+                <ul class="navbar-nav nav-justified mx-auto w-100 text-center mt-1 " style="">
+                    <li class="nav-item ">
+                        <a href=" {% url 'anon:home' %}" class="nav-link d-flex flex-column" ><img style="width:40px; height:40px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="{% url 'anon:dashboard' user %}" class="nav-link d-flex flex-column" ><img style="width:40px; height:40px" src="{% static 'images/home.png' %}" alt="" class="img-fluid"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'anon:telegram' user %}" class="nav-link d-flex flex-column"> <img style="width:40px; height:40px" src="{% static 'images/telegram.png' %}" alt="" class="img-fluid"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'anon:favourites' user %}" class="nav-link d-flex flex-column"><img style="width:40px; height:40px" src="{% static 'images/favourites.png' %}" alt="" class="img-fluid"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-center d-flex flex-column" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img style="width:35px; height:35px" src="{% static 'images/settings.png' %}" alt="" class="img-fluid"></a>
+                        <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'anon:update' user %}"> Update Profile</a>
+                            <a class="dropdown-item" href="{% url 'anon:password' user %}"> Change Password</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'anon:archive_list' user %}"> View Archives </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'anon:sign_out' %}" class="nav-link d-flex flex-column"><img style="width:35px; height:35px" src="{% static 'images/logout.png' %}" alt="" class="img-fluid"></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+-->
+<!--<nav class="navbar navbar-expand navbar-expand-lg navbar-light bg-light shadow fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Start Bootstrap</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item px-3 active">
+                            <a href="/Wisdom/dashboard/" class="logo mr-auto"><img style="width:40px; height:40px" src="/static/images/telegram.png" alt="" class="img-fluid"></a>
+                        </li><li class="nav-item px-3 active">
+                            <a href="/Wisdom/telegram/" class="logo mr-auto"><img style="width:40px; height:40px" src="/static/images/telegram.png" alt="" class="img-fluid"></a>
+                        </li>
+                        <li class="nav-item px-3">
+                            <a href="/Wisdom/favourites/" class="logo mr-auto"><img style="width:40px; height:40px" src="/static/images/favourites.png" alt="" class="img-fluid"></a>
+                        </li>
+                        <li class="nav-item px-3">
+                            <div class="dropdown show">
+                                <a href="#" class="logo mr-auto dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img style="width:35px; height:35px" src="/static/images/settings.png" alt="" class="img-fluid"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="/Wisdom/update-profile/"> Update Profile</a>
+                                    <a class="dropdown-item" href="/Wisdom/change-password/"> Change Password</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item px-3">
+                            <a href="/logout/" class="logo mr-auto"><img style="width:40px; height:40px" src="/static/images/logout.png" alt="" class="img-fluid"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>-->

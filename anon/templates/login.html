@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Register</title>
+        <link rel="stylesheet" href="{% static 'css/hearth-button.css' %}">
+        <link href="{%  static 'images/download.png' %}" rel="icon">
+        <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
+        <link rel="stylesheet" href="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\css\bootstrap.min.css' %}">
+        
+    </head>
+    <script type="text/javascript" src="{% static '\js\jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\js\bootstrap.min.js' %}"></script>
+
+
+    <body class="container" style="background-image: url('/static/images/background.png');
+                            background-position: center center;
+                            background-repeat: no-repeat;
+                            background-attachment: fixed;
+                            background-size: cover;
+                            background-color: #fffdd0;">
+                            
+    <br> <br> <br>
+    <div class="dashone">
+        <div class="dashtwo">
+            <div class="dashthree">
+                <div class="dashcard">
+                    <form class="text-center mx-auto borde border-light p-3 needs-validation " method="post" novalidate>
+                        <a href="{% url 'anon:home' %}" class="logo mr-auto"><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></a>
+                        <br/>
+                        <p class="h4 mb-4"><b>Sign in</b></p>
+                        {% csrf_token %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <!-- Email -->
+                        <input type="text" id="defaultLoginFormEmail" name="username" class="form-control mt-4" placeholder="Username or Email" required>
+                        <div  class="invalid-feedback">
+                            This field is required
+                        </div>   
+                        <!-- Password -->
+                        <input type="password" id="defaultLoginFormPassword" name="password" class="form-control mt-4" placeholder="Password" required>
+                        <div  class="invalid-feedback">
+                            This field is required
+                        </div>   
+                        <div class="d-flex justify-content-around">
+                            <div>
+                                <!-- Forgot password -->
+                                <a href="{% url 'password_reset' %}">Forgot password?</a>
+                            </div>
+                        </div>
+                        <!-- Sign in button -->
+                        <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+                        <div class="card-footer">                        
+                            <p>Not a member?
+                                <a href="{% url 'anon:register' %}">Register</a>
+                            </p>
+                        </div>
+                        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    <script type="text/javascript">
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
+    </body>
+
+
+</html> 

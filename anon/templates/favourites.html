@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{user}} Favourites{% endblock %}
+
+{% block content %}
+
+<h5 class="text-center mx-auto" style="background-color:white; align-content: center;">👑{{user}} | Favourite Posts <span class="fas fa-heart fa-lg" style="font-size:24px; color:red"></span> </h5>
+<br>
+    {% for message in message %}
+    <div class="mx-auto text-center" style=" margin: auto;">           
+        <div class="row">
+            <div class="col-sm-4 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">{{message.date_sent}}</p>
+                        <p class="card-text"> <b>{{message.text}}</b> </p>
+                    </div>
+                    <div class=card-footer>
+                    <div class="card-footer mx-auto text-center">
+                        👑
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <br>
+    {% empty %}
+    <div class="dashone" style="padding-top: 100px;">
+        <div class="dashtwo">
+            <div class="dashthree">
+                <div class="dashcard">
+                    <div class="card-bod  border border-light p-3 text-center">
+                        
+                        <div class="d-flex justify-content-around ">
+                            <h3 class="text-center">Your favourite post will appear here once you've liked them</h3>
+                        </div>
+                        <div class='container ' style="color:red; text-align:centre;">
+                            <i class="fa fa-heart" style="font-size:100px;  display: inline-block"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+<br>
+        {% if message.has_other_pages %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pg-blue justify-content-center">
+                    {% if message.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class=" disabled"><span class="page-link">&laquo;</span></li>
+                    {% endif %}
+                    {% if message.number|add:'-3' > 1 %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.number|add:'-4' }}">&hellip;</a></li>
+                    {% endif %}
+
+                    {% for i in message.paginator.page_range %}
+                        {% if message.number == i %}
+                            <li class="active"><span style="background-color: #0088cc; color: white;" class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% elif i > message.number|add:'-3' and i < message.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if message.paginator.num_pages > message.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.number|add:'4' }}">&hellip;</a></li>
+                    {% endif %}
+                    {% if message.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span class="page-link">&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+{% endblock %}

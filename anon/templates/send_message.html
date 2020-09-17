@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Send</title>
+        <link rel="stylesheet" href="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\css\bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static '\css\simplemde.min.css' %}">
+        <link href="{%  static 'images/download.png' %}" rel="icon">
+        <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <script type="text/javascript" src="{% static '\js\jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static '\js\simplemde.min.js' %}"></script>
+    <body id="home" class="container" style="background-image: url('/static/images/background.png');
+                                background-position: center center;
+                                background-repeat: no-repeat;
+                                background-attachment: fixed;
+                                background-size: cover;
+                                background-color:#0088cc;
+                                padding-top:80px">
+        <div class="mx-auto text-center" style=" margin: auto; padding-bottom: 50px;">           
+            <div class="row">
+                <div class="col-sm-6 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="/{{user}}/" class=" text-center  border-light p- " method="post" novalidate>
+                                <a href="{% url 'anon:home' %}" class="logo mr-auto "><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></a>
+                                <br/>
+                                <p class="h4 mb-4"><b>Send</b></p>
+                                {% if view %}
+                                <b>👑{{user}} wants you to view his messages. <a href="#view">Show</a></b>
+                                {% endif %}
+                                {% csrf_token %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-success" role="alert">
+                                            {{ message }}
+                                        </div>
+                                        Its your turn oya register
+                                    {% endfor %}
+                                {% endif %}
+
+                                {% for field in form %}
+                                    <div id="send" class="form-group w-100 mx-auto mb-4">
+                                        {{ field }}
+                                    </div>
+                                    {% for error in field.errors %}
+                                        <p class="alert alert-danger" role="alert"> {{ error }}</p>
+                                    {% endfor %}
+                                {% endfor %}
+                            <div class="form-group">
+                                    <button class="btn btn-info btn-block my-4" type="submit">Send</button>
+                                </div>
+                            </form>             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if view %}
+            <div id="view">
+                {% for message in message %}
+                <div class="mx-auto text-center" style=" margin: auto;">           
+                    <div class="row">
+                        <div class="col-sm-4 mx-auto">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-title">{{message.date_sent}}</p>
+                                    <p class="card-text"> <b>{{message.text}}</b> </p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a class="btn  btn-sm float-right" id="center" href="{% url 'anon:register' %}" ><img style="width:30px; height:30px; display: inline-block" src="{% static 'images/delete.png' %}" alt="" class="img-fluid"></a>                        
+                                </div>
+                            </div>
+                        </div> 
+                    </div>   
+                </div>
+                <br>                
+                {% empty %}
+                David has no message yet <a href="#send">send</a>
+                {% endfor %}
+            </div>
+            {% if message.has_other_pages %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pg-blue justify-content-center">
+                        {% if message.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ message.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class=" disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% if message.number|add:'-3' > 1 %}
+                            <li class="page-item"><a class="page-link" href="?page={{ message.number|add:'-4' }}">&hellip;</a></li>
+                        {% endif %}
+
+                        {% for i in message.paginator.page_range %}
+                            {% if message.number == i %}
+                                <li class="active"><span style="background-color: #0088cc; color: white;" class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% elif i > message.number|add:'-3' and i < message.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if message.paginator.num_pages > message.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ message.number|add:'4' }}">&hellip;</a></li>
+                        {% endif %}
+                        {% if message.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ message.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% endif %}
+        
+    </body>
+</html>
+
+

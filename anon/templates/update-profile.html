@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="text-center border border-light needs-validation "  method="post" novalidate >
+                        <a href="{% url 'anon:home' %}" class="logo mr-auto"><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></a>
+                        <br> <br>
+                        <div class="card-header h4 "><b>Update Profile</b></div>
+                        <br> <br>
+                        {% csrf_token %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group ">
+                            {{update.username}}
+                            {% for error in update.username.errors %}
+                                <p class="alert alert-danger" role="alert"> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group ">
+                            {{update.email}}
+                            {% for error in update.email.errors %}
+                                <p class="alert alert-danger" role="alert"> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <button class=" container btn btn-info btn-block my-4" type="submit">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>            
+    <script type="text/javascript">
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+        </script>
+{% endblock %}

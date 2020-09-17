@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{user}} Archives{% endblock %}
+
+{% block content %}
+    <h4 class="text-center mx-auto" style="background-color:white; align-content: center;">👑{{user}} | Archives<i style="color: #0088cc;" class="fas fa-archive"></i> </h4>
+    <div id="body" >
+        {% for message in message %}
+            <div class="dashone">
+                <div class="dashtwo">
+                    <div class="dashthree">
+                        <div class="dashcard"  id="refresh_card{{ message.id }}">
+                            <div class="card-bod">
+                                <p class="card-titl">{{message.date_sent}}</p>
+                                <p class="card-tex"> <b>{{message.text}}</b> </p>
+                            </div>
+                            <div class="card-foote text-cente">
+                                <hr>
+                                <div>
+                                    <button   style="font-size:20px; margin-top: 8px; color: #0088cc" class="button-one button unique float-right" id="un_archive{{message.id}}"  ><i class="fas fa-archive"></i></button>
+                                    {% csrf_token %}
+                                    <script type="text/javascript">
+                                        $(document).ready(function() {
+                                            $("#body").on("click", "#un_archive{{message.id}}", function(){
+                                                $("#refresh_card{{ message.id }}").hide(1000, function(){ $("#refresh_card{{ message.id }}").remove(); });
+                                                var request= new XMLHttpRequest();
+                                                request.open('POST', "{% url 'anon:archive' user message.id %}");
+                                                request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                                                request.send();
+                                            });
+                                        });
+                                    </script>
+                                     <!--    $("#body").load(location.href+" #body>*","") -->
+                                </div>
+                                <div>
+                                    <button  style="font-size:20px; margin-top: 8px; margin-right: 16px" class="button-one button  unique float-right" id="delete{{message.id}}"  ><i class="far fa-trash-alt"></i></button>
+                                    {% csrf_token %}
+                                    <script type="text/javascript">
+                                        $(document).ready(function() {
+                                             $("#body").on("click", "#delete{{message.id}}", function(){
+                                                var userselection = confirm("Are you sure you want to delete this message permanently?");
+                                                if (userselection == true){
+                                                    $("#refresh_card{{ message.id }}").hide(1000, function(){ $("#refresh_card{{ message.id }}").remove(); });
+                                                    var request= new XMLHttpRequest();
+                                                    request.open('POST', "{% url 'anon:delete' user message.id %}");
+                                                    request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                                                    request.send();
+                                                    // $("#body").load(location.href+" #body>*","")
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="dashone" style="padding-top:100px">
+                <div class="dashtwo">
+                    <div class="dashthree">
+                        <div class="dashcard" >
+                            <div class="card-body  border border-light p-5 text-center">
+                                
+                                <div class="d-flex justify-content-around ">
+                                    <b class="text-center">Your archived messages will appear here</b>
+                                </div>
+                                <div class='container ' style="color:#0088cc; text-align:centre;">
+                                    <i class="fas fa-archive" style="font-size:100px;  display: inline-block"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <br>
+        {% if message.has_other_pages %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pg-blue justify-content-center">
+                    {% if message.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class=" disabled"><span class="page-link">&laquo;</span></li>
+                    {% endif %}
+                    {% if message.number|add:'-3' > 1 %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.number|add:'-4' }}">&hellip;</a></li>
+                    {% endif %}
+
+                    {% for i in message.paginator.page_range %}
+                        {% if message.number == i %}
+                            <li class="active"><span style="background-color: #0088cc; color: white;" class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% elif i > message.number|add:'-3' and i < message.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if message.paginator.num_pages > message.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.number|add:'4' }}">&hellip;</a></li>
+                    {% endif %}
+                    {% if message.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ message.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span class="page-link">&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+        {% if archives %}
+            <script type="text/javascript">
+                $(document).ready(function() {            
+                    $("#body").on("click", ".unique", function(){
+                        if (document.getElementsByClassName('unique').length == 2) {
+                            location.reload();                
+                        }                
+                    });        
+                });        
+            </script>
+        {% endif %}
+    </div>
+{% endblock %}
