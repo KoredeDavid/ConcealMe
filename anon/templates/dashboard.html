@@ -55,6 +55,9 @@
             </div>
             {% endif %}
         <script type="text/javascript">
+        $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
             $(document).ready(function() {
                 $("#bla").on("click", "#view", function(){
                     var request= new XMLHttpRequest();
@@ -72,19 +75,92 @@
                     text.innerHTML = "OFF";
                     }
                 });
+
             });        
         </script>
     </div>    
     <div class="mx-auto text-center" style=" margin: auto;">
-        <button class="btn btn-primary "   type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Share or copy your link
+        <button class="btn btn-primary btn-copy js-tooltip js-copy" type="button" data-toggle="collapse"  data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"  data-toggle="tooltip" data-placement="top" data-copy="john.doe@email.com" title="">
+             Share or copy your link
         </button>
+
         <div class="collapse" id="collapseExample" style="padding-top: 5px;">
-            <div class="card card-body mx-auto col-sm-4">
-                <p>{% url 'anon:dashboard' user %}</p>
+            <div class="card card-body mx-auto col-sm-3">
+                  <table class="table table-hover">
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+
+      </tr>
+
+    </tbody>
+                      <tfoot>
+      <tr>
+        Share
+      </tr>
+    </tfoot>
+  </table>
             </div>
         </div>
     </div>
+
+
+    <script type="text/javascript">
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+    <script type="text/javascript">
+
+      function copyToClipboard(text, el) {
+  var copyTest = document.queryCommandSupported('copy');
+  var elOriginalText = el.attr('data-original-title');
+
+  if (copyTest === true) {
+    var copyTextArea = document.createElement("textarea");
+    copyTextArea.value = text;
+    document.body.appendChild(copyTextArea);
+    copyTextArea.select();
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'Copied!' : 'Whoops, not copied!';
+      el.attr('data-original-title', msg).tooltip('show');
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+    document.body.removeChild(copyTextArea);
+    el.attr('data-original-title', elOriginalText);
+  } else {
+    // Fallback if browser doesn't support .execCommand('copy')
+    window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
+  }
+}
+
+$(document).ready(function() {
+  // Initialize
+  // ---------------------------------------------------------------------
+
+  // Tooltips
+  // Requires Bootstrap 3 for functionality
+  $('.js-tooltip').tooltip();
+
+  // Copy to clipboard
+  // Grab any text in the attribute 'data-copy' and pass it to the
+  // copy function
+  $('.js-copy').click(function() {
+    var text = $(this).attr('data-copy');
+    var el = $(this);
+    copyToClipboard(text, el);
+  });
+});
+    </script>
     <div id="body" style="padding-top: 10px;">
 
         <div class="king">
@@ -157,8 +233,32 @@
                         <div class="dashcard">
                             <div class="card-bod  border border-light p-3 text-center">                                
                                 <div class="d-flex justify-content-around ">
-                                    <b class="text-center">Your got no message yet</b>
+                                    <b class="text-center">Your got no message yet, share your link to you friends to start receiving messages ...</b>
+
                                 </div>
+                                <div class=" mx-auto col-sm-9">
+                  <table class="table table-hover">
+    <tbody>
+      <tr>
+        <td>John</td>
+        <td>Doe</td>
+
+      </tr>
+      <tr>
+        <td>Mary</td>
+        <td>Moe</td>
+
+      </tr>
+
+    </tbody>
+                      <tfoot>
+      <tr>
+        Share
+      </tr>
+    </tfoot>
+  </table>
+                                    <div class="card-footer ">LINK</div>
+            </div>
                                 <div class='container ' style="color:black; text-align:centre;">
                                         <i class="fa fa-envelope" style="font-size:100px; display: inline-block"></i>
                                 </div>                                
@@ -208,11 +308,15 @@
                 </ul>
             </nav>
         {% endif %}
+        <div class="mx-auto text-center">
+            <div class="mx-auto text-center" id="choice_loader"></div>
+        </div>
         {% if message%}
             <script type="text/javascript">
                 $(document).ready(function() {            
                     $("#body").on("click", ".unique", function(){
                         if (document.getElementsByClassName('unique').length == 2) {
+                            $("#choice_loader").replaceWith( (' <div class="spinner-grow text-center text-danger mx-auto" role="status"><span class="sr-only text-center mx-auto">Loading...</span></div>') );
                             location.reload();                
                         }                
                     });        
@@ -220,6 +324,7 @@
             </script>
         {%endif%}
     </div>
+
     </div>
 {% endblock %}
 

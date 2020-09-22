@@ -8,15 +8,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+INSTALLED_APPS.append('sslserver', )
+
+BASE_DIR = os.getcwd()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
 
 SERVER_EMAIL = 'mrconceal@gmail.com'
 DEFAULT_FROM_EMAIL = SERVER_EMAIL

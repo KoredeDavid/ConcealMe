@@ -18,7 +18,7 @@
                             background-attachment: fixed;
                             background-size: cover;
                             background-color: #fffdd0;">
-  
+
 
         <div class="dashone" style="padding-top: 100px;">
                 <div class="dashtwo">
@@ -27,9 +27,18 @@
                     <form class="mx-auto needs-validation border-light p-3" method="post" novalidate >
                         <div class="text-center">
                             <a href="{% url 'anon:home' %}" class="logo"><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" ></a>
-                        </div>                       
+                        </div>
                         <p class="h4 mb-4 text-center"><b>Register</b></p>
-                        {% csrf_token %}                                           
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                    <div class="alert text-center alert-danger" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% csrf_token %}
                         {{form.username}}                        
                         <div  class="invalid-feedback">
                             Please choose a username.

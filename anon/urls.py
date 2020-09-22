@@ -22,10 +22,7 @@ urlpatterns = [
 
     path('<my_username>/<message_id>/archive',  views.archive_post, name='archive'),
     path('<my_username>/archives/',  views.archive_list, name='archive_list'),
-    # path('<my_username>/<message_id>/archive',  views.archive, name='archive'),
-    # path('<my_username>/<message_id>/un-archive',  views.un_archive, name='un_archive'),
-    # path('<my_username>/<message_id>/delete-archive', views.delete_archive, name='delete_archive'),
-    # path('<my_username>/archives/',  views.archive_list, name='archive_list'),
+
 
     path('<my_username>/<message_id>/delete',  views.delete_message, name='delete'),
 

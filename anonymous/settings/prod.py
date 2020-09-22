@@ -6,23 +6,24 @@ SECRET_KEY = get_secret_setting('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["conceal.azurewebsites.net",]
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware',)
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('DBNAME', ''),
         'USER': os.environ.get('DBUSER', ''),
         'PASSWORD': os.environ.get('DBPASS', ''),
         'HOST': os.environ.get('DBHOST', ''),
         'PORT': os.environ.get('DBPORT', ''),
-        'OPTIONS': {
-                    'sslmode': 'require',
-                    }
+
     }
 }
-
-STATIC_ROOT = 'static'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 EMAIL_HOST_USER = get_secret_setting('EMAIL_HOST_USER')
 EMAIL_HOST = get_secret_setting('EMAIL_HOST')

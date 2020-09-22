@@ -1,5 +1,5 @@
 import json
-from _socket import gaierror
+
 from secrets import token_urlsafe
 
 from django.contrib import messages
@@ -31,10 +31,12 @@ def get_last_chat_id_and_text(request):
         text = updates["message"]["text"]
         chat_id = updates["message"]["chat"]["id"]
         if text in Telegram.objects.all().values_list('anon_user_id', flat=True):
+            print(1)
             from .telegram import send_telegram_message2
-            url = 'https://bbd6b1f1b201.ngrok.io/'
-            my_username = str(Telegram.objects.get(anon_user_id = text).user)
-            exists = Telegram.objects.filter(user__username__iexact=my_username, telegram_id=chat_id, anon_user_id=text).exists()
+            url = 'https://conceal.azurewebservices.net/'
+            my_username = str(Telegram.objects.get(anon_user_id=text).user)
+            exists = Telegram.objects.filter(user__username__iexact=my_username, telegram_id=chat_id,
+                                             anon_user_id=text).exists()
             if not exists:
                 if Telegram.objects.get(user__username__iexact=my_username).anon_user_id == text:
                     update = Telegram.objects.get(user__username__iexact=my_username)
@@ -46,10 +48,11 @@ def get_last_chat_id_and_text(request):
                         'Welcome {}, you will receive 3 anonymous messages per notification on your telegram account. '
                         'Access, {} to edit your '
                         'telegram settings. Share your link ({}) to your friends and let them shake tables'.format
-                        (my_username, url + my_username + '/telegram', url+my_username), chat_id)
+                        (my_username, url + my_username + '/telegram', url + my_username), chat_id)
             else:
                 send_telegram_message2('{}, your telegram chat id has already been registered. Access, {} to edit your '
-                                      'telegram settings.'.format(my_username, url+my_username+'/telegram'), chat_id)
+                                       'telegram settings.'.format(my_username, url + my_username + '/telegram'),
+                                       chat_id)
 
     except json.decoder.JSONDecodeError as err:
         return HttpResponse(str(err))
@@ -93,10 +96,9 @@ def register(request):
             t_form.user = user
             t_form.telegram_id = 0
             t_form.save()
-            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+            login_user = authenticate(username=user, password=password)
+            login(request, login_user)
             return redirect('anon:dashboard', request.user)
     else:
         form = CustomUserCreationForm()
@@ -115,6 +117,10 @@ def sign_in(request):
         if username == "" or password == "":
             messages.error(request, 'Both username/email and password must be filled')
             return render(request, 'login.html')
+        try:
+            username = CustomUser.objects.get(username__iexact=username)
+        except CustomUser.DoesNotExist:
+            pass
         user = authenticate(request=request, username=username, password=password)
         if nexts is None:
             if user is not None:
@@ -576,8 +582,8 @@ def send_message(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     view = user.senders_view
-    page = request.GET.get('page', 1)
     message = Messages.objects.filter(user__username__iexact=my_username, archives=False).order_by('-date_sent')
+    page = request.GET.get('page', 1)
     paginator = Paginator(message, 10)
     try:
         message = paginator.page(page)
@@ -588,11 +594,17 @@ def send_message(request, my_username):
 
     if request.method == 'POST':
         form = MyMessages(request.POST)
+        context = {
+            'form': form,
+            'user': user,
+            'view': view,
+            'message': message
+        }
         if form.is_valid():
             f = form.save(commit=False)
             f.user = user
             f.date_sent = timezone.now()
-            f.ip_address = '192.168.0.1'
+            f.ip_address = request.META.get("REMOTE_ADDR", '127.0.0.1')
             f.save()
             messages.success(request,
                              'Message sent to 👑{}'.format(
@@ -603,15 +615,16 @@ def send_message(request, my_username):
             # send = list(set(message) ^ set(sent))
             telegram_choices = Telegram.objects.get(user__username__iexact=user).telegram_choice
             if Telegram.objects.get(user__username__iexact=user).telegram_switch:
-                if len(message) % int(telegram_choices) == 0:
-                    send_telegram_message((message[:int(telegram_choices)][::-1]), chat)
-            form = MyMessages()
-            context = {
-                'form': form,
-                'user': user,
-                'view': view,
-                'message': message
-            }
+                message = Messages.objects.filter(user__username__iexact=my_username, archives=False).order_by(
+                    '-date_sent')
+                count = len(message)
+                choice = int(telegram_choices)
+                if count % int(telegram_choices) == 0:
+                    amount_of_messages_to_send = (message[:choice][::-1])
+                    amount_of_messages_to_send.insert(0, f"{user}, from conceal")
+                    send_telegram_message(amount_of_messages_to_send, chat)
+
+            return redirect("/{}/#home".format(user))
     else:
         form = MyMessages()
     context = {
@@ -627,121 +640,3 @@ def sign_out(request):
     logout(request)
     messages.success(request, 'Logged Out Successfully  👑Sire')
     return redirect("anon:sign_in")
-
-
-"""
-    $('#like{{ message.id }}').toggleClass(' fa fa-heart button-one float-left');
-    if request.is_ajax():
-        html = render_to_string('dashboard.html', request=request)
-        return JsonResponse({'form': html}) 
-    <div id="{{message.id}}">
-        {% include 'like_post.html' with message=message %}
-    </div>
-    {% load static %}
-    {% load custom_tags %}
-
-    {% liked user message.id as liked %}
-       <form  action=""  method="post">
-        {% if message.liked %}
-            {% csrf_token %}
-            <button type="submit" id="like" name="message_id" value="{{ message.id }}"   class=" like fa fa-heart button-one float-left"  style="font-size:24px; color:red; display: inline-block" ></button>
-            <script type="text/javascript">
-                $(document).ready(function(event){
-
-                $(document).on('click', '#like', function(event){
-                  console.log("i'm clicked");
-                  event.preventDefault();
-                  var pk = $(this).attr('value');
-                  // Construct the full URL with "id"
-                  $.ajax({
-                    type: 'POST',
-                    url: "{% url 'anon:like' user message.id %}",
-                    data: {'my_username': '{{user}}', 'message_id': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                    dataType: 'json',
-                    success: function(response){
-                      $('#'+pk).html(response['form'])
-                      console.log($('#'+pk).html(response['form']));
-                    },
-                    error: function(rs, e){
-                      console.log(rs.responseText);
-                    },
-                  });
-                });
-                });
-            </script>
-    {% else %}
-            <button type="submit" id="like" name="message_id" value="{{ message.id }}"  class=" like fa fa-heart-o button-one float-left"  style="font-size:24px; color:red; display: inline-block" ></button>
-            <script type="text/javascript">
-                $(document).ready(function(event){
-
-                $(document).on('click', '#like', function(event){
-                  console.log("i'm clicked");
-                  event.preventDefault();
-                  var pk = $(this).attr('value');
-                  // Construct the full URL with "id"
-                  $.ajax({
-                    type: 'POST',
-                    url: "{% url 'anon:like' user message.id %}",
-                    data: {'my_username': '{{user}}', 'message_id': {{message.id}}, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                    dataType: 'json',
-                    success: function(response){
-                      $('#'+pk).html(response['form'])
-                      console.log($('#'+pk).html(response['form']));
-                    },
-                    error: function(rs, e){
-                      console.log(rs.responseText);
-                    },
-                  });
-                });
-                });
-            </script>
-    {% endif %}
-       </form>
-                    
-"""
-
-'''
-    {% empty %}
-
-                <div style=" margin: auto;
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            -ms-transform: translate(-50%, -50%);
-                            transform: translate(-50%, -50%);
-                            background-color: #fffdd0;" >
-
-                    <div class="card" style="width:40rem; height:30rem; background-color: ;">
-                        <div class="card-body  border border-light p-5 text-center">
-                            <br><br><br><br><br>
-                            <div class="d-flex justify-content-around ">
-                                <h3 class="text-center">You got no message yet</h3>
-                            </div>
-                            <div class='container ' style="color:black; text-align:centre;">
-                                <i class="fa fa-heart" style="font-size:100px; color:red; display: inline-block"></i>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-            {% endfor %}
-            {% if archives %}
-               <form  class="text-center" action="{% url 'anon:archive_list' user %}">  <button ><span style=" background-color: white; "><b>ARCHIVES</b><img style="width:35px; height:35px; display: inline-block" src="{% static 'images/archive.png' %}" alt="" class="img-fluid"></span></button></form>
-            {%endif%}
-    
-    try:
-        if len(updates["result"]) > 0:
-            num_updates = len(updates["result"])
-            last_update = num_updates - 1
-            text = updates["result"][last_update]["message"]["text"]
-            chat_id = updates["result"][last_update]["message"]["chat"]["id"]
-            if text in Telegram.objects.all().values_list('anon_user_id', flat=True):
-                Anon, my_username, pk = text.split('-')
-                if Telegram.objects.get(user__username__iexact=my_username).anon_user_id == text:
-                    update = Telegram.objects.get(user__username__iexact=my_username)
-                    update.telegram_id = chat_id
-                    update.telegram_switch = True
-                    update.save()
-                    return HttpResponse(text, chat_id)
-    except :
-        return HttpResponseBadRequest('Nothing yet')
-'''

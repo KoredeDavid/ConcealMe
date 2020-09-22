@@ -107,16 +107,20 @@
                 </ul>
             </nav>
         {% endif %}
-        {% if archives %}
+        <div class="mx-auto text-center">
+            <div class="mx-auto text-center" id="choice_loader"></div>
+        </div>
+        {% if message%}
             <script type="text/javascript">
-                $(document).ready(function() {            
+                $(document).ready(function() {
                     $("#body").on("click", ".unique", function(){
                         if (document.getElementsByClassName('unique').length == 2) {
-                            location.reload();                
-                        }                
-                    });        
-                });        
+                            $("#choice_loader").replaceWith( (' <div class="spinner-grow text-center text-danger mx-auto" role="status"><span class="sr-only text-center mx-auto">Loading...</span></div>') );
+                            location.reload();
+                        }
+                    });
+                });
             </script>
-        {% endif %}
+        {%endif%}
     </div>
 {% endblock %}

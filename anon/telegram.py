@@ -1,10 +1,11 @@
 import json
+import os
 import requests
 import time
 from .models import Telegram
-from background_task import background
 
-TOKEN = "1266251902:AAGysQFS8eFOXfjp-FIgWjIAKCM1HN-R1Sc"
+
+TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 
@@ -102,6 +103,7 @@ def send_telegram_message(text, chat_id):
         get_url(url)
     except:
         pass
+
 
 def send_telegram_message2(text, chat_id):
     try:

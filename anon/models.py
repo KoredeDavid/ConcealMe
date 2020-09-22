@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
-from datetime import datetime
 
 
 @deconstructible
@@ -16,21 +15,11 @@ class UnicodeUsernameValidator(validators.RegexValidator):
     flags = 0
 
 
-class EmailLowerField(models.EmailField):
-    def to_python(self, value):
-        return value.lower()
-
-
-class UsernameCapitalizeField(models.CharField):
-    def to_python(self, value):
-        return value.capitalize()
-
-
 username_validator = UnicodeUsernameValidator()
 
 
 class CustomUser(AbstractUser):
-    username = UsernameCapitalizeField(
+    username = models.CharField(
         _('username'),
         max_length=30,
         help_text=_('Letters, digits and underscore only.'),
@@ -40,37 +29,27 @@ class CustomUser(AbstractUser):
             'unique': _("A user with that username already exists."),
         },
     )
-    email = EmailLowerField(_('email address'), blank=False, null=True, unique=True)
+    email = models.EmailField(_('email address'), blank=False, null=True, unique=True)
     senders_view = models.BooleanField(blank=True, default=False)
+
+    def clean(self):
+        self.username = self.username.capitalize()
+        self.email = self.email.lower()
 
 
 class Messages(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user')
-    ip_address = models.GenericIPAddressField(default="")
+    ip_address = models.GenericIPAddressField()
     text = models.TextField(max_length=300)
-    date_sent = models.DateTimeField(default=datetime.now())
+    date_sent = models.DateTimeField(auto_now_add=True)
     likes = models.BooleanField(blank=True, default=False)
     archives = models.BooleanField(blank=True, default=False)
-    # likes = models.ManyToManyField(CustomUser, default=None, blank=True, related_name='likes')
-    # archives = models.ManyToManyField(CustomUser, default=None, blank=True, related_name='archives')
 
     class Meta:
         verbose_name_plural = "Messages"
 
     def __str__(self):
         return self.text
-
-
-"""
-class Archive(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    ip_address = models.GenericIPAddressField(default="")
-    text = models.TextField(max_length=300)
-    date_sent = models.DateTimeField(default=datetime.now())
-
-    def __str__(self):
-        return self.text
-"""
 
 
 class Telegram(models.Model):
@@ -81,8 +60,7 @@ class Telegram(models.Model):
     telegram_choice = models.CharField(blank=True, default="3", max_length=1)
 
     def __str__(self):
-        return self.anon_user_id
-        # return self.anon_user_id + ' ' + str(self.telegram_id)
+        return self.anon_user_id + ' ' + str(self.telegram_id)
 
 
 class Feedback(models.Model):
@@ -97,3 +75,4 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name + "_" + self.email
+
