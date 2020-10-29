@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Register</title>
+        <title>Login</title>
         <link rel="stylesheet" href="{% static 'css/hearth-button.css' %}">
         <link href="{%  static 'images/download.png' %}" rel="icon">
         <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
@@ -24,11 +24,10 @@
                             background-color: #fffdd0;">
                             
     <br> <br> <br>
-    <div class="dashone">
-        <div class="dashtwo">
-            <div class="dashthree">
-                <div class="dashcard">
-                    <form class="text-center mx-auto borde border-light p-3 needs-validation " method="post" novalidate>
+        <div class="row ">
+            <div class="col-md-6 mx-auto">
+                <div class="card card-body mb-5   p-6 mx-auto " style="border-color:#87CEEB; border-radius: 10px;">
+                    <form class="text-center  needs-validation " method="post" novalidate>
                         <a href="{% url 'anon:home' %}" class="logo mr-auto"><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></a>
                         <br/>
                         <p class="h4 mb-4"><b>Sign in</b></p>
@@ -44,12 +43,12 @@
                         <input type="text" id="defaultLoginFormEmail" name="username" class="form-control mt-4" placeholder="Username or Email" required>
                         <div  class="invalid-feedback">
                             This field is required
-                        </div>   
+                        </div>
                         <!-- Password -->
                         <input type="password" id="defaultLoginFormPassword" name="password" class="form-control mt-4" placeholder="Password" required>
                         <div  class="invalid-feedback">
                             This field is required
-                        </div>   
+                        </div>
                         <div class="d-flex justify-content-around">
                             <div>
                                 <!-- Forgot password -->
@@ -58,18 +57,48 @@
                         </div>
                         <!-- Sign in button -->
                         <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
-                        <div class="card-footer">                        
+                        <div class="card-footer">
                             <p>Not a member?
                                 <a href="{% url 'anon:register' %}">Register</a>
                             </p>
                         </div>
                         <input type="hidden" name="next" value="{{ request.GET.next }}"/>
                     </form>
-
                 </div>
             </div>
         </div>
-    </div> 
+
+{% if request.user.is_authenticated %}
+<script>
+	$(document).ready(function(){
+	    function popup(){
+	        $("#exampleModalCenter").modal('show');
+	    }
+	    setTimeout(popup, 2000);
+
+	});
+</script>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Welcome {{request.user}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        You are already logged in as 👑{{request.user}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="{% url 'anon:dashboard' request.user %}" type="button" class="btn btn-primary">Continue to dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
     
     <script type="text/javascript">
     // Example starter JavaScript for disabling form submissions if there are invalid fields

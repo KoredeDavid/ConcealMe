@@ -1,9 +1,7 @@
+import os
+
 from django.urls import path
 from . import views
-from secrets import token_urlsafe
-
-token = 'torO3ZkNr3o'
-
 app_name = 'anon'
 
 urlpatterns = [
@@ -13,7 +11,7 @@ urlpatterns = [
     path('login/', views.sign_in, name='sign_in'),   
     path('logout/', views.sign_out, name='sign_out'),
 
-    path('telegram/{}/'.format(token), views.get_last_chat_id_and_text, name='get_updates'),
+    path(os.environ.get('TELEGRAM_URL', "telegram/torO3ZkNr3o/"), views.get_last_chat_id_and_text, name='get_updates'),
 
     path('<my_username>/', views.send_message, name='send_message'),
 

@@ -6,9 +6,9 @@
     <h4 class="text-center mx-auto" style="background-color:white; align-content: center;">👑{{user}} | Telegram <span class="fab fa-telegram-plane fa-lg" style="font-size:24px; color:#0088cc"></span></h4>
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-success alert-dismissible text-center fade show" role="alert">
+            <div class="alert alert-success alert-dimdissible text-center fade show" role="alert">
                 {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dimdiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -24,48 +24,129 @@
 
     <div id="body" style="background-color:white; padding-top:30px">
         {% if zero %}
-            <div class="text-center mb-2">
-                <b >To activate your telegram in order to receive your anonymous messages just follow the simple steps below</b>
-            </div>
-            <div id="accordion">
-                <div class="row">
-                    <div class="col-sm-5 mx-auto">
-                        <div class="card">
-                            <div class="card-header" id="headingOne">
-                                <span class="mb-0">
-                                    <span class="fab fa-telegram-plane" style=" color: red"></span>
-                                    <button class="btn btn-primary" >
-                                        STEP #1
-                                    </button>
-                                </span>
-                            </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                                <div class="card-body">
-                                    Skip to <a href="#headingTwo"> Step #2 </a> If you already have the telegram app and a telegram account. if not
-                                        Download the telegram app for Android or IOS and open an account if you don't have one<br>
+            <div class="row">
+                <div class="col-md-6" style="background-color:lavender;">
+                    <div class="text-center mb-2">
+                        <span><b> Personal Telegram Account:</b> To activate your telegram in order to receive your anonymous messages on<i style="font-size:14px; font-weight:bold"><u> your personal telegram account</u></i>,  follow the simple steps below</span>
+                    </div>
+                    <div id="accordion">
+                        <div class="row">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <span class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary" >
+                                                STEP #1
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                            Skip to <b> Step #2 </b> If you already have the telegram app and a telegram account. if not
+                                                Download the telegram app for <a target="_blank" href="https://telegram.org/dl/android"> Android </a>or
+                                            <a target="_blank" href="https://telegram.org/dl/ios"> IOS</a> and open an account if you don't have one.<br>
+                                        </div>
 
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary " >
+                                                STEP #2
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo"  >
+                                        <div class="card-body">
+                                            Send your unique ID <b class="btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{id}}" title="copy">{{id}}</b> <i class="far fa-copy"></i> to <a target="_blank" href="https://t.me/concealbot"> Telegram ConcealBot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span>. Please never ever share this with any one.
+                                            <br>
+                                            You will receive a welcome response... Enjoy.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="col-md-6 " style="background-color:lavenderblush;">
+                    <div class="text-center mb-2">
+                        <span><b> Telegram Group:</b> To activate telegram in order to receive your anonymous messages on <i style="font-size:14px; font-weight:bold"> <u> a telegram group  </u></i>follow the simple steps below</span>
+                    </div>
+                    <div id="accordion">
+                        <div class="row">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <span class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary" >
+                                                STEP #1
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                           Skip to <b> Step #2 </b> If you already have the telegram app and a telegram account. if not
+                                                Download the telegram app for <a target="_blank" href="https://telegram.org/dl/android"> Android </a>or
+                                            <a  target="_blank" href="https://telegram.org/dl/ios"> IOS</a> and open an account if you don't have one.<br>
 
-                <div class="row mt-5 mb-5">
-                    <div class="col-sm-5 mx-auto">
-                        <div class="card">
-                            <div class="card-header" id="headingTwo">
-                                <h5 class="mb-0">
-                                    <span class="fab fa-telegram-plane" style=" color: red"></span>
-                                    <button class="btn btn-primary " >
-                                        STEP #2
-                                    </button>
-                                </h5>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="collapseTwo"  >
-                                <div class="card-body">
-                                    Send your unique ID <b>{{id}}</b> (simply click on it to copy) to <a href="https://t.me/korededavidbot"> Telegram korededavidbot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span>. Please never ever share this with any one.
-                                    <br>
-                                    You will receive a welcome response.... Enjoy
+                        </div>
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary " >
+                                                STEP #2
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo"  >
+                                        <div class="card-body">
+                                            Add <b class="btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="ConcealBot" title="copy">@ConcealBot</b> <i class="far fa-copy"></i> to your group and make it an <b>admin</b>, as it is important
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary " >
+                                                STEP #3
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo"  >
+                                        <div class="card-body">
+                                            Send your unique ID <b class="btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{id}}" title="copy">{{id}}</b> <i class="far fa-copy"></i> to
+                                            your group.
+                                            <br>
+                                            You will receive a welcome response...
+                                            <br>
+                                            You don't need to be worried about exposing your <b>ID</b> as it will be changed automatically once it has been received.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -89,50 +170,7 @@
                     });
                 });
             </script>
-            <hr>
-            <div >You receive <b>{{choice}}</b> messages per notifaction on telegram, edit the amount below</div><br>
-            <form style="padding-bottom :30px; display: inline-block;" action="{% url 'anon:choice' user %}" method="post" >
-                {% csrf_token %}
-                <label for="id_telegram_choice">Telegram choice:</label>
-                <select name="telegram_choice" class="custom-select col-sm-4" id="id_telegram_choice" >
-                    <option value="{{choice}}" selected="">Oya Pick</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3" >Three</option>
-                    <option value="4">Four</option>
-                    <option value="5">Five</option>
-                </select> &nbsp; &nbsp;
-                <button class="btn btn-primary" id="choice" type="submit">Apply</button>
-                <div style="display: inline-block;" id="choice_loader"></div>
-            </form>
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $("#body").on("click", "#choice", function(){
-                        $("#choice").hide(1);
-                        $("#choice_loader").replaceWith( (' <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>') );
-                    });
-                });
-            </script>
-            <hr>
-            <div class="row" >
-                <div class="col-sm-10 ">
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
-                                <span class="fab fa-telegram-plane" style=" color: red"></span>
-                                <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    CHANGE TELEGRAM ACCOUNT
-                                </button>
-                            </h5>
-                        </div>
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                To change your telegram account simply send your unique ID <b>{{id}} </b> (simply click on it to copy) to <a href="https://t.me/korededavidbot"> Telegram korededavidbot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span> with your new telegram account . Please never ever share this with any one.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         {% endif %}
 
         {% if not zero and  switch %}
@@ -150,12 +188,15 @@
                     });
                 });
             </script>
+        {% endif %}
+
+          {% if not zero %}
             <hr>
             <form style="padding-bottom :30px; display: inline-block;" action="{% url 'anon:choice' user %}" method="post" >
                 <div >You receive <b>{{choice}}</b> messages per notification on telegram, edit the amount below</div><br>
                 {% csrf_token %}
-                <label for="id_telegram_choice">Telegram choice:</label>
-                <select name="telegram_choice" class="custom-select col-sm-4" id="id_telegram_choice" >
+                <label for="id_telegram_choice"><i style="font-size:24px" class="fas fa-edit"></i></label>
+                <select name="telegram_choice" class="custom-select col-md-4" id="id_telegram_choice" >
                     <option value="{{choice}}" selected="">Oya Pick</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
@@ -175,26 +216,191 @@
                 });
             </script>
             <hr>
-            <div class="row" >
-                <div class="col-sm-10 ">
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
-                                <span class="fab fa-telegram-plane" style=" color: red"></span>
-                                <span class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    CHANGE TELEGRAM ACCOUNT
-                                </span>
-                            </h5>
+            <div class="">
+                <div class="mb-2">
+                    <div class="mx-auto text-center " id="headingOne">
+                        <span class="fab fa-telegram-plane" style=" color: red"></span>
+                        <span class="  text-center" >
+                            <b>CHANGE TELEGRAM ACCOUNT</b>
+                        </span>
+                    </div>
+                </div>
+                        <div class="row ">
+                <div class="col-md-6" style="background-color:lavender;">
+                    <div class="text-center mb-2">
+                        <span><b>Personal Telegram Account: </b>To activate your telegram in order to receive
+                            your anonymous messages on<i style="font-size:14px; font-weight:bold"><u> your personal telegram account</u></i> follow the simple steps below</span>
+                    </div>
+                    <div id="accordion">
+                        <div class="row">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <span class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary" >
+                                                STEP #1
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                           Skip to <b> Step #2 </b> If you already have the telegram app and a telegram account. if not
+                                                Download the telegram app for <a target="_blank" href="https://telegram.org/dl/android"> Android </a>or
+                                            <a target="_blank" href="https://telegram.org/dl/ios"> IOS</a> and open an account if you don't have one.<br>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                To change your telegram account simply send your unique ID <b>{{id}} </b> (simply click on it to copy) to <a href="https://t.me/korededavidbot"> Telegram korededavidbot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span> with your new telegram account . Please never ever share this with any one.
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary " >
+                                                STEP #2
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo"  >
+                                        <div class="card-body">
+                                            Send your unique ID <b class="btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{id}}" title="copy">{{id}}</b> <i class="far fa-copy"></i> to <a target="_blank" href="https://t.me/concealbot"> Telegram ConcealBot</a> <span class="fab fa-telegram-plane" style=" color: #0088cc"></span>. Please never ever share this with any one.
+                                            <br>
+                                            You will receive a welcome response... Enjoy.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="col-md-6 " style="background-color:lavenderblush;">
+                    <div class="text-center mb-2">
+                        <span><b>Telegram Group:</b> To activate telegram in order to receive your anonymous messages on<i style="font-size:14px; font-weight:bold"> <u> a telegram group </u></i>, follow the simple steps below</span>
+                    </div>
+                    <div id="accordion">
+                        <div class="row">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <span class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary" >
+                                                STEP #1
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                          Skip to <b> Step #2 </b> If you already have the telegram app and a telegram account. if not
+                                                Download the telegram app for <a target="_blank" href="https://telegram.org/dl/android"> Android </a>or
+                                            <a target="_blank" href="https://telegram.org/dl/ios"> IOS</a> and open an account if you don't have one.<br>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary " >
+                                                STEP #2
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo"  >
+                                        <div class="card-body">
+                                            Add <b class="btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="ConcealBot" title="copy">@ConcealBot</b> <i class="far fa-copy"></i> to your group and make it an <b>admin</b>, as it is important.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-md-10 mx-auto">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <span class="fab fa-telegram-plane" style=" color: red"></span>
+                                            <button class="btn btn-primary " >
+                                                STEP #3
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo"  >
+                                        <div class="card-body">
+                                            Send your unique ID <b class="btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{id}}" title="copy">{{id}}</b> <i class="far fa-copy"></i> to
+                                            your group.
+                                            <br>
+                                            You will receive a welcome response...
+                                            <br>
+                                            You don't need to be worried about exposing your <b>ID</b> as it will be changed automatically once it has been received.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+                    </div>
         {% endif %}
+        <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <script type="text/javascript">
+        function copyToClipboard(text, el) {
+            var copyTest = document.queryCommandSupported('copy');
+            var elOriginalText = el.attr('data-original-title');
+            if (copyTest === true) {
+                var copyTextArea = document.createElement("textarea");
+                copyTextArea.value = text;
+                document.body.appendChild(copyTextArea);
+                copyTextArea.select();
+                try {
+                    var successful = document.execCommand('copy');
+                    var msg = successful ? 'Copied!' : 'Whoops, not copied!';
+                    el.attr('data-original-title', msg).tooltip('show');
+                } catch (err) {
+                    console.log('Oops, unable to copy');
+                }
+                document.body.removeChild(copyTextArea);
+                el.attr('data-original-title', elOriginalText);
+            } else {
+                // Fallback if browser doesn't support .execCommand('copy')
+                window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
+                }
+            }
+            $(document).ready(function() {
+                // Initialize
+                // ---------------------------------------------------------------------
+                // Tooltips
+                // Requires Bootstrap 3 for functionality
+                $('.js-tooltip').tooltip();
+                // Copy to clipboard
+                // Grab any text in the attribute 'data-copy' and pass it to the
+                // copy function
+                $('.js-copy').click(function() {
+                    var text = $(this).attr('data-copy');
+                    var el = $(this);
+                    copyToClipboard(text, el);
+                });
+            });
+    </script>
     </div>
 
 {% endblock %}

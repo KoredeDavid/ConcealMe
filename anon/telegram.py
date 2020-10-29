@@ -5,7 +5,7 @@ import time
 from .models import Telegram
 
 
-TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
+TOKEN = os.environ.get('TELEGRAM_TOKEN', '1381825999:AAG7zNiHHGyiOQSX9vvWFm-xtlWMb1jKTMs')
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 

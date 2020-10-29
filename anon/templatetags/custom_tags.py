@@ -8,7 +8,7 @@ register = template.Library()
 @register.simple_tag
 def liked(my_username, message_id):
     # user_id = CustomUser.objects.get(username__iexact=my_username).id
-    message = get_object_or_404(Messages, user__username__iexact=my_username, id=message_id)
+    message = get_object_or_404(Messages, user=my_username, id=message_id)
 
     # if message.likes.filter(id=user_id).exists():
     if message.likes:
@@ -20,7 +20,7 @@ def liked(my_username, message_id):
 @register.simple_tag
 def archived(my_username, message_id):
     # user_id = CustomUser.objects.get(username__iexact=my_username).id
-    message = get_object_or_404(Messages, user__username__iexact=my_username, id=message_id)
+    message = get_object_or_404(Messages, user=my_username, id=message_id)
 
     if message.archives:
         return True

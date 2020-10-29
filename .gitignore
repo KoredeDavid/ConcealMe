@@ -59,8 +59,10 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
-anonymous-secrets.json
+anonymous/default_settings.py
+anonymous/anonymous-secrets.json
 db.sqlite3-journal
+.azure
 
 # Flask stuff:
 instance/

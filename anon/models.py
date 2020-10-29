@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import MinLengthValidator
 
 
 @deconstructible
@@ -24,22 +25,34 @@ class CustomUser(AbstractUser):
         max_length=30,
         help_text=_('Letters, digits and underscore only.'),
         unique=True,
-        validators=[username_validator],
+        validators=[username_validator, MinLengthValidator(5)],
         error_messages={
             'unique': _("A user with that username already exists."),
         },
     )
+    display_name = models.CharField(max_length=30, default=" ")
     email = models.EmailField(_('email address'), blank=False, null=True, unique=True)
     senders_view = models.BooleanField(blank=True, default=False)
 
     def clean(self):
-        self.username = self.username.capitalize()
-        self.email = self.email.lower()
+        self.display_name = self.username
+        self.username = str(self.username.capitalize())
+        self.email = str(self.email.lower())
+
+
+"""
+In other to do a reverse many to one query .i.e Trying get or filter an object from the parent key
+(In the code below the parent key is CustomUser). Use CustomUser.objects.get(username='Wisdom').messages_set.all()
+if  its base model has no 'related_name', else, use its 'relates_name' instead of 'messages_set'.i.e
+CustomUser.objects.get(username='Wisdom').user.all()(The related name is 'user')
+
+"""
 
 
 class Messages(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user')
     ip_address = models.GenericIPAddressField()
+    device = models.TextField(default="Fucks")
     text = models.TextField(max_length=300)
     date_sent = models.DateTimeField(auto_now_add=True)
     likes = models.BooleanField(blank=True, default=False)
@@ -54,7 +67,7 @@ class Messages(models.Model):
 
 class Telegram(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    telegram_id = models.PositiveIntegerField()
+    telegram_id = models.TextField()
     anon_user_id = models.TextField()
     telegram_switch = models.BooleanField(blank=True, default=False)
     telegram_choice = models.CharField(blank=True, default="3", max_length=1)
@@ -75,4 +88,3 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name + "_" + self.email
-

@@ -14,13 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from __future__ import absolute_import
+
+import os
+
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(os.environ.get('ADMIN_URL', "admin/"), admin.site.urls),
     path('reset/',
          auth_views.PasswordResetView.as_view(
              template_name='registration/password_reset.html',
@@ -45,6 +48,13 @@ urlpatterns = [
 
 ]
 
+"""
+if os.environ.get("DJANGO_ENV", '') == 'production':
+    handler404 = 'anon.views.error_404'
+    handler500 = 'anon.views.error_500'
+    handler403 = 'anon.views.error_403'
+    handler400 = 'anon.views.error_400'
+"""
 
 # sys.path.append('C:\\Users\\USER\\Projects\\anonymous\\anon')
 

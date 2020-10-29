@@ -9,9 +9,9 @@
     {% for message in message %}
     <div class="mx-auto text-center" style=" margin: auto;">           
         <div class="row">
-            <div class="col-sm-4 mx-auto">
-                <div class="card">
-                    <div class="card-body">
+            <div class="col-md-5 mx-auto">
+                <div class="card ">
+                    <div class="card-body ">
                         <p class="card-title">{{message.date_sent}}</p>
                         <p class="card-text"> <b>{{message.text}}</b> </p>
                     </div>
@@ -26,26 +26,22 @@
     </div>
         <br>
     {% empty %}
-    <div class="dashone" style="padding-top: 100px;">
-        <div class="dashtwo">
-            <div class="dashthree">
-                <div class="dashcard">
-                    <div class="card-bod  border border-light p-3 text-center">
-                        
+        <div class="row mt-5">
+            <div class="col-md-5 mx-auto">
+                <div class="card mb-5  p-3 mx-auto " >
+                    <div class="card-body  border border-light p-5 text-center">
+
                         <div class="d-flex justify-content-around ">
-                            <b class="text-center">Your favourite post will appear here once you've liked them</b>
-                        </div>
-                        <div class='container ' style="color:red; text-align:centre;">
-                            <i class="fa fa-heart" style="font-size:100px;  display: inline-block"></i>
-                        </div>
-                        
+                        <b class="text-center">Your favourite messages will appear here once you've liked them</b>
+                    </div>
+                    <div class='container' style="color:red; text-align:centre;">
+                        <i class="fa fa-heart" style="font-size:100px;  display: inline-block"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endfor %}
-<br>
+    <br>
         {% if message.has_other_pages %}
             <nav aria-label="Page navigation example">
                 <ul class="pagination pg-blue justify-content-center">
@@ -77,4 +73,5 @@
                 </ul>
             </nav>
         {% endif %}
+    </div>
 {% endblock %}

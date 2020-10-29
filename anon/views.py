@@ -1,4 +1,5 @@
 import json
+import os
 
 from secrets import token_urlsafe
 
@@ -30,32 +31,36 @@ def get_last_chat_id_and_text(request):
         updates = json.loads(request.body)
         text = updates["message"]["text"]
         chat_id = updates["message"]["chat"]["id"]
+        chat_id = str(chat_id)
         if text in Telegram.objects.all().values_list('anon_user_id', flat=True):
-            print(1)
             from .telegram import send_telegram_message2
-            url = 'https://conceal.azurewebservices.net/'
+            url = os.environ.get('WEB_URL', "")
             my_username = str(Telegram.objects.get(anon_user_id=text).user)
-            exists = Telegram.objects.filter(user__username__iexact=my_username, telegram_id=chat_id,
+            exists = Telegram.objects.filter(user__username=my_username, telegram_id=chat_id,
                                              anon_user_id=text).exists()
             if not exists:
-                if Telegram.objects.get(user__username__iexact=my_username).anon_user_id == text:
-                    update = Telegram.objects.get(user__username__iexact=my_username)
+                print('ok')
+                if Telegram.objects.get(user__username=my_username).anon_user_id == text:
+                    update = Telegram.objects.get(user__username=my_username)
                     update.telegram_id = chat_id
                     update.telegram_switch = True
+                    if "-" in str(chat_id):
+                        update.anon_user_id = f"Anon-{my_username}-{token_urlsafe(10)}"
                     update.save()
                     print(text + ' ' + str(chat_id))
                     send_telegram_message2(
-                        'Welcome {}, you will receive 3 anonymous messages per notification on your telegram account. '
+                        'Welcome 👑{}, you will receive 3 anonymous messages per notification on your telegram '
+                        'account. '
                         'Access, {} to edit your '
-                        'telegram settings. Share your link ({}) to your friends and let them shake tables'.format
-                        (my_username, url + my_username + '/telegram', url + my_username), chat_id)
+                        'telegram settings. Share your link ({}) to your friends and let them shake tables😀'.format
+                        (my_username, url + my_username + '/telegram', url + my_username), str(chat_id))
             else:
-                send_telegram_message2('{}, your telegram chat id has already been registered. Access, {} to edit your '
+                send_telegram_message2('👑{}, your telegram chat id has already been registered. Access, '
+                                       '{} to edit your '
                                        'telegram settings.'.format(my_username, url + my_username + '/telegram'),
-                                       chat_id)
-
-    except json.decoder.JSONDecodeError as err:
-        return HttpResponse(str(err))
+                                       str(chat_id))
+    except:
+        pass
     return HttpResponse('OK')
 
 
@@ -94,12 +99,12 @@ def register(request):
             user_id = CustomUser.objects.get(username__iexact=my_username).id
             t_form.anon_user_id = 'Anon-{}-{}-{}'.format(my_username, user_id, token_urlsafe(10))
             t_form.user = user
-            t_form.telegram_id = 0
+            t_form.telegram_id = '0'
             t_form.save()
             password = form.cleaned_data.get('password1')
             login_user = authenticate(username=user, password=password)
             login(request, login_user)
-            return redirect('anon:dashboard', request.user)
+            return redirect('anon:dashboard', request.user.username)
     else:
         form = CustomUserCreationForm()
         # telegram_form = TelegramForm()
@@ -118,14 +123,14 @@ def sign_in(request):
             messages.error(request, 'Both username/email and password must be filled')
             return render(request, 'login.html')
         try:
-            username = CustomUser.objects.get(username__iexact=username)
+            username = CustomUser.objects.get(username__iexact=username).username
         except CustomUser.DoesNotExist:
             pass
-        user = authenticate(request=request, username=username, password=password)
+        user = authenticate(request=request, username=str(username), password=password)
         if nexts is None:
             if user is not None:
                 login(request, user)
-                return redirect('anon:dashboard', request.user)
+                return redirect('anon:dashboard', request.user.username)
             else:
                 messages.error(request, 'Guy, your login details are incorrect')
                 return render(request, 'login.html')
@@ -148,16 +153,14 @@ def update_profile(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
             update = CustomUserChangeForm(request.POST, instance=user)
             if update.is_valid():
                 update.save()
                 update_anon_user_id = Telegram.objects.get(user__id=user.id)
                 new_user = CustomUser.objects.get(id=user.id).username
-                old_id = update_anon_user_id.anon_user_id
-                Anon, my_username, pk, token = old_id.split('-')
-                update_anon_user_id.anon_user_id = 'Anon-{}-{}-{}'.format(new_user, user.id, token)
+                update_anon_user_id.anon_user_id = 'Anon-{}-{}-{}'.format(new_user, user.id, token_urlsafe(10))
                 update_anon_user_id.save()
                 messages.success(request, 'Profile updated successfully')
                 return redirect('anon:dashboard', new_user)
@@ -176,7 +179,7 @@ def change_password(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
             update = CustomPasswordChangeForm(user, request.POST)
             if update.is_valid():
@@ -199,14 +202,15 @@ def dashboard(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        anon_user_id = Telegram.objects.get(user__username__iexact=user).anon_user_id
-        message = Messages.objects.filter(user__username__iexact=user, archives=False).order_by('-date_sent')
-        zero = Telegram.objects.get(user__username__iexact=user).telegram_id == 0
-        switch = Telegram.objects.get(user__username__iexact=user).telegram_switch
-        archives = Messages.objects.filter(user__username__iexact=user, archives=True).order_by('-date_sent')
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
+        anon_user_id = Telegram.objects.get(user=user).anon_user_id
+        message = Messages.objects.filter(user=user, archives=False).order_by('-date_sent')
+        zero = Telegram.objects.get(user=user).telegram_id == "0"
+        switch = Telegram.objects.get(user=user).telegram_switch
+        archives = Messages.objects.filter(user=user, archives=True).order_by('-date_sent')
         count_archives = archives.count() != 0
         view = user.senders_view
+        url = os.environ.get('WEB_URL', "")
         page = request.GET.get('page', 1)
         paginator = Paginator(message, 10)
         try:
@@ -222,11 +226,12 @@ def dashboard(request, my_username):
             'message': message,
             'anon_user_id': anon_user_id,
             'archives': count_archives,
-            'view': view
+            'view': view,
+            'url': url
         }
         return render(request, 'dashboard.html', context)
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -237,21 +242,20 @@ def senders_view(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
-            message = get_object_or_404(CustomUser, username__iexact=user)
-            if not message.senders_view:
-                message.senders_view = True
-                message.save()
+            if not user.senders_view:
+                user.senders_view = True
+                user.save()
             else:
-                message.senders_view = False
-                message.save()
+                user.senders_view = False
+                user.save()
             return HttpResponse('Success')
         else:
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:home')
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -262,10 +266,9 @@ def like_post(request, my_username, message_id):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
-            user_id = user.id
-            message = get_object_or_404(Messages, user__username__iexact=user, id=message_id)
+            message = get_object_or_404(Messages, user=user, id=message_id)
             if message.likes:
                 message.likes = False
                 message.save()
@@ -277,7 +280,7 @@ def like_post(request, my_username, message_id):
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:home')
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -288,8 +291,8 @@ def like_post_list(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        favourites = Messages.objects.filter(user__username__iexact=user, likes=True)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
+        favourites = Messages.objects.filter(user=user, likes=True)
         page = request.GET.get('page', 1)
         paginator = Paginator(favourites, 10)
         try:
@@ -302,7 +305,7 @@ def like_post_list(request, my_username):
         # favourites = message.archives
         return render(request, 'favourites.html', {'message': favourites, 'user': user})
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -313,10 +316,10 @@ def archive_post(request, my_username, message_id):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
             user_id = user.id
-            message = get_object_or_404(Messages, user__username__iexact=user, id=message_id)
+            message = get_object_or_404(Messages, user=user, id=message_id)
             if message.archives:
                 message.archives = False
                 message.save()
@@ -328,7 +331,7 @@ def archive_post(request, my_username, message_id):
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:home')
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -339,8 +342,8 @@ def archive_list(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        archives = Messages.objects.filter(user__username__iexact=user, archives=True)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
+        archives = Messages.objects.filter(user=user, archives=True)
         page = request.GET.get('page', 1)
         paginator = Paginator(archives, 10)
         try:
@@ -353,115 +356,8 @@ def archive_list(request, my_username):
         # archives = user.archives.all()
         return render(request, 'archives.html', {'message': archives, 'user': user})
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
-
-
-"""
-@login_required(login_url='anon:sign_in')
-def archive(request, my_username, message_id):
-    try:
-        valid = CustomUser.objects.get(username__iexact=my_username)
-    except CustomUser.DoesNotExist:
-        raise Http404()
-    if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        if request.method == 'POST':
-            message = Messages.objects.get(user__username__iexact=user, id=message_id)
-            pk = message.pk
-            m_id = message.id
-            username = message.user
-            text = message.text
-            ip_address = message.ip_address
-            date_sent = message.date_sent
-            archive_message = Archive.objects.create(user=username, id=m_id, pk=pk, text=text,
-                                                     date_sent=date_sent, ip_address=ip_address)
-            archive_message.save()
-            message.delete()
-            return HttpResponse('success')
-        else:
-            messages.error(request, "👑Alaye, it doesn't work that way ")
-            return redirect('anon:home')
-    else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
-        return redirect("anon:sign_in")
-
-
-@login_required(login_url='anon:sign_in')
-def un_archive(request, my_username, message_id):
-    try:
-        valid = CustomUser.objects.get(username__iexact=my_username)
-    except CustomUser.DoesNotExist:
-        raise Http404()
-    if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        if request.method == 'POST':
-            archived = Archive.objects.get(user__username__iexact=user, id=message_id)
-            pk = archived.pk
-            m_id = archived.id
-            username = archived.user
-            text = archived.text
-            ip_address = archived.ip_address
-            date_sent = archived.date_sent
-            un_archive_message = Messages.objects.create(user=username, id=m_id, pk=pk, text=text,
-                                                         date_sent=date_sent, ip_address=ip_address)
-            un_archive_message.save()
-            archived.delete()
-            return HttpResponse('success')
-        else:
-            messages.error(request, "👑Alaye, it doesn't work that way ")
-            return redirect('anon:dashboard', user)
-    else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
-        return redirect("anon:sign_in")
-
-@login_required(login_url='anon:sign_in')
-def delete_archive(request, my_username, message_id):
-    try:
-        valid = CustomUser.objects.get(username__iexact=my_username)
-    except CustomUser.DoesNotExist:
-        raise Http404()
-    if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        if request.method == 'POST':
-            message = Archive.objects.get(user__username__iexact=user, id=message_id)
-            message.delete()
-            return HttpResponse('success')
-        else:
-            messages.error(request, "👑Alaye, it doesn't work that way ")
-            return redirect('anon:dashboard', user)
-    else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
-        return redirect("anon:sign_in")
-
-
-@login_required(login_url='anon:sign_in')
-def archive_list(request, my_username):
-    try:
-        valid = CustomUser.objects.get(username__iexact=my_username)
-    except CustomUser.DoesNotExist:
-        raise Http404()
-    if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        archives = Archive.objects.filter(user__username__iexact=user).order_by('-date_sent')
-        page = request.GET.get('page', 1)
-        paginator = Paginator(archives, 10)
-        try:
-            archives = paginator.page(page)
-        except PageNotAnInteger:
-            archives = paginator.page(1)
-        except EmptyPage:
-            archives = paginator.page(paginator.num_pages)
-        context = {
-            'message': archives,
-            'user': user
-        }
-        return render(request, 'archives.html', context=context)
-    else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
-        return redirect("anon:sign_in")
-
-"""
 
 
 @login_required(login_url='anon:sign_in')
@@ -471,16 +367,16 @@ def delete_message(request, my_username, message_id):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
-            message = Messages.objects.get(user__username__iexact=user, id=message_id)
+            message = Messages.objects.get(user=user, id=message_id)
             message.delete()
             return HttpResponse('success')
         else:
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:dashboard', user)
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -491,11 +387,11 @@ def telegram(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
-        zero = Telegram.objects.get(user__username__iexact=user).telegram_id == 0
-        telegram_id = Telegram.objects.get(user__username__iexact=user).anon_user_id
-        switch = Telegram.objects.get(user__username__iexact=user).telegram_switch
-        choice = Telegram.objects.get(user__username__iexact=user).telegram_choice
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
+        zero = Telegram.objects.get(user=user).telegram_id == "0"
+        telegram_id = Telegram.objects.get(user=user).anon_user_id
+        switch = Telegram.objects.get(user=user).telegram_switch
+        choice = Telegram.objects.get(user=user).telegram_choice
         context = {
             'zero': zero,
             'switch': switch,
@@ -506,7 +402,7 @@ def telegram(request, my_username):
 
         return render(request, 'telegram.html', context)
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -517,9 +413,9 @@ def deactivate_telegram(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
-            switch = Telegram.objects.get(user__username__iexact=user)
+            switch = Telegram.objects.get(user=user)
             switch.telegram_switch = False
             switch.save()
             messages.success(request, "Telegram Deactivated")
@@ -528,7 +424,7 @@ def deactivate_telegram(request, my_username):
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:dashboard', user)
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -539,9 +435,9 @@ def activate_telegram(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
-            switch = Telegram.objects.get(user__username__iexact=user)
+            switch = Telegram.objects.get(user=user)
             switch.telegram_switch = True
             switch.save()
             messages.success(request, "Telegram Activated")
@@ -550,7 +446,7 @@ def activate_telegram(request, my_username):
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:dashboard', user)
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -561,9 +457,9 @@ def telegram_choice(request, my_username):
     except CustomUser.DoesNotExist:
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
-        user = get_object_or_404(CustomUser, username__iexact=request.user)
+        user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
-            choice = Telegram.objects.get(user__username__iexact=user)
+            choice = Telegram.objects.get(user=user)
             choice.telegram_choice = request.POST['telegram_choice']
             choice.save()
             messages.success(request, "Done")
@@ -572,7 +468,7 @@ def telegram_choice(request, my_username):
             messages.error(request, "👑Alaye, it doesn't work that way ")
             return redirect('anon:dashboard', user)
     else:
-        messages.error(request, 'You are  logged in as {}'.format(request.user))
+        messages.error(request, 'You are  logged in as {}'.format(request.user.username))
         return redirect("anon:sign_in")
 
 
@@ -581,7 +477,9 @@ def send_message(request, my_username):
         user = CustomUser.objects.get(username__iexact=my_username)
     except CustomUser.DoesNotExist:
         raise Http404()
+
     view = user.senders_view
+    url = os.environ.get('WEB_URL', "")
     message = Messages.objects.filter(user__username__iexact=my_username, archives=False).order_by('-date_sent')
     page = request.GET.get('page', 1)
     paginator = Paginator(message, 10)
@@ -605,6 +503,7 @@ def send_message(request, my_username):
             f.user = user
             f.date_sent = timezone.now()
             f.ip_address = request.META.get("REMOTE_ADDR", '127.0.0.1')
+            f.device = request.META.get("HTTP_USER_AGENT", 'Fucks')
             f.save()
             messages.success(request,
                              'Message sent to 👑{}'.format(
@@ -613,15 +512,17 @@ def send_message(request, my_username):
             from .telegram import send_telegram_message
             # sent = message[-4]
             # send = list(set(message) ^ set(sent))
-            telegram_choices = Telegram.objects.get(user__username__iexact=user).telegram_choice
-            if Telegram.objects.get(user__username__iexact=user).telegram_switch:
+            telegram_choices = Telegram.objects.get(user=user).telegram_choice
+            if Telegram.objects.get(user=user).telegram_switch:
                 message = Messages.objects.filter(user__username__iexact=my_username, archives=False).order_by(
                     '-date_sent')
                 count = len(message)
                 choice = int(telegram_choices)
+
                 if count % int(telegram_choices) == 0:
                     amount_of_messages_to_send = (message[:choice][::-1])
-                    amount_of_messages_to_send.insert(0, f"{user}, from conceal")
+                    amount_of_messages_to_send.insert(0, f"{user}👑 anonymous messages, from conceal.🙈")
+                    amount_of_messages_to_send.append(f"This is your link {url}{user} 👑")
                     send_telegram_message(amount_of_messages_to_send, chat)
 
             return redirect("/{}/#home".format(user))

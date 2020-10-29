@@ -1,43 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 <div>
-
     <h5 class="text-center mx-auto" style="background-color:white; align-content: center;">👑{{user}} |{% if not zero and  switch %}
-        
-            <b style="background-color: white;">Telegram Active <i class="fas fa-certificate" style="color:#0088cc"></i></b>
-        
-    {% endif %}  {% if zero %}
-        <a href="{% url 'anon:telegram' user %}" class="logo mr-auto">Activate your telegram</a>
+        <b style="background-color: white;">Telegram Active <i class="fas fa-certificate" style="color:#0088cc"></i></b>
+        {% endif %}  {% if zero %}
+            <a href="{% url 'anon:telegram' user %}" class="logo mr-auto">Activate your telegram</a>
+        {% endif %}
+        {% if not zero and not switch %}
+            <form style="display: inline-block;"  action="{% url 'anon:activate' user %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn  btn-primary"> Activate Telegram</button>
+            </form>
+        {% endif %}
+    </h5>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible text-center fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+        {% endfor %}
     {% endif %}
-    
-    {% if not zero and not switch %}
-
-        <form style="display: inline-block;"  action="{% url 'anon:activate' user %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn  btn-primary"> Activate Telegram</button>
-        </form>
-    {% endif %}    
-</h5>  
-{% if messages %}
-                                    {% for message in messages %}
-                                        <div class="alert alert-success alert-dismissible text-center fade show" role="alert">
-                                            {{ message }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                              </button>
-                                        </div>        
-                                    {% endfor %}
-                                {% endif %}
-                                <script type="text/javascript">
-                                    $(document).ready(function() {
-                                        $(".alert").delay(4000).slideUp(200, function() {
-                                            $(this).alert('close');
-                                        });
-                                    });
-                                </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".alert").delay(4000).slideUp(200, function() {
+                $(this).alert('close');
+            });
+        });
+    </script>
 
     <div id="bla">            
         {% csrf_token %}
@@ -78,88 +74,104 @@
 
             });        
         </script>
-    </div>    
+    </div>
+
+
+
+    {% if message %}
     <div class="mx-auto text-center" style=" margin: auto;">
-        <button class="btn btn-primary btn-copy js-tooltip js-copy" type="button" data-toggle="collapse"  data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"  data-toggle="tooltip" data-placement="top" data-copy="john.doe@email.com" title="">
+        <button class="btn btn-primary btn-copy js-tooltip js-copy" type="button" data-toggle="collapse"  data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"  data-toggle="tooltip" data-placement="top" data-copy="{{url}}/{{user}}" title="">
              Share or copy your link
         </button>
 
         <div class="collapse" id="collapseExample" style="padding-top: 5px;">
-            <div class="card card-body mx-auto col-sm-3">
-                  <table class="table table-hover">
-    <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-
-      </tr>
-
-    </tbody>
-                      <tfoot>
-      <tr>
-        Share
-      </tr>
-    </tfoot>
-  </table>
+            <div class="row ">
+                <div class="col-md-5 mx-auto">
+                    <div class="card card-body mx-auto ">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                   <td><button class="btn" style="font-size:; background-color:#0088cc"><a style="font-size:; color:white" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fconceal.com%2F{{user}}&text=You%20see%20me%2C%20but%20I%20don%27t%20see%20you%F0%9F%99%88.%20Got%20anything%20to%20tell%20me%3F%20Write%20me%20an%20anonymous%20message%F0%9F%91%91%F0%9F%A4%AB">
+                                       <i class="fab fa-telegram-plane" style="font-size:; color:white"></i> share</a></button> <br> <span>Telegram</span>
+                                   </td>
+                                     <td><button class="btn" style="font-size:; background-color:#25d366"><a style="font-size:; color:white" target="_blank" href="https://api.whatsapp.com/send?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫 https://conceal.com/{{user}}">
+                                       <i class="fab fa-whatsapp" style="font-size:; color:white"></i> share</a></button> <br> <span>Whatsapp</span>
+                                   </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fconceal.com%2F{{user}}&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                                        <br> <span>Facebook</span>
+                                    </td>
+                                    <td><button class="btn" style="font-size:; background-color:#00acee"><a style="font-size:; color:white" target="_blank"
+                                        href="http://twitter.com/share?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫&url=https://conceal.com/{{user}}&hashtags=conceal">
+                                       <i class="fab fa-twitter" style="font-size:; color:white"></i> tweet</a></button> <br> <span>Twitter</span>
+                                   </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    Share with:
+                                </tr>
+                            </tfoot>
+                        </table>
+                        Copy link <div class="card-footer btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{url}}/{{user}}" title="copy"><b>{{url}}/{{user}}</b></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    {% else %}
+        {% if zero %}
+            <div class="mx-auto text-center"><a href="{% url 'anon:telegram' user %}" class="btn btn-primary">Activate your telegram</a></div>
+        {% endif %}
+    {% endif %}
 
 
     <script type="text/javascript">
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-</script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 
     <script type="text/javascript">
-
-      function copyToClipboard(text, el) {
-  var copyTest = document.queryCommandSupported('copy');
-  var elOriginalText = el.attr('data-original-title');
-
-  if (copyTest === true) {
-    var copyTextArea = document.createElement("textarea");
-    copyTextArea.value = text;
-    document.body.appendChild(copyTextArea);
-    copyTextArea.select();
-    try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'Copied!' : 'Whoops, not copied!';
-      el.attr('data-original-title', msg).tooltip('show');
-    } catch (err) {
-      console.log('Oops, unable to copy');
-    }
-    document.body.removeChild(copyTextArea);
-    el.attr('data-original-title', elOriginalText);
-  } else {
-    // Fallback if browser doesn't support .execCommand('copy')
-    window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
-  }
-}
-
-$(document).ready(function() {
-  // Initialize
-  // ---------------------------------------------------------------------
-
-  // Tooltips
-  // Requires Bootstrap 3 for functionality
-  $('.js-tooltip').tooltip();
-
-  // Copy to clipboard
-  // Grab any text in the attribute 'data-copy' and pass it to the
-  // copy function
-  $('.js-copy').click(function() {
-    var text = $(this).attr('data-copy');
-    var el = $(this);
-    copyToClipboard(text, el);
-  });
-});
+        function copyToClipboard(text, el) {
+            var copyTest = document.queryCommandSupported('copy');
+            var elOriginalText = el.attr('data-original-title');
+            if (copyTest === true) {
+                var copyTextArea = document.createElement("textarea");
+                copyTextArea.value = text;
+                document.body.appendChild(copyTextArea);
+                copyTextArea.select();
+                try {
+                    var successful = document.execCommand('copy');
+                    var msg = successful ? 'Copied!' : 'Whoops, not copied!';
+                    el.attr('data-original-title', msg).tooltip('show');
+                } catch (err) {
+                    console.log('Oops, unable to copy');
+                }
+                document.body.removeChild(copyTextArea);
+                el.attr('data-original-title', elOriginalText);
+            } else {
+                // Fallback if browser doesn't support .execCommand('copy')
+                window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
+                }
+            }
+            $(document).ready(function() {
+                // Initialize
+                // ---------------------------------------------------------------------
+                // Tooltips
+                // Requires Bootstrap 3 for functionality
+                $('.js-tooltip').tooltip();
+                // Copy to clipboard
+                // Grab any text in the attribute 'data-copy' and pass it to the
+                // copy function
+                $('.js-copy').click(function() {
+                    var text = $(this).attr('data-copy');
+                    var el = $(this);
+                    copyToClipboard(text, el);
+                });
+            });
     </script>
     <div id="body" style="padding-top: 10px;">
 
@@ -173,97 +185,119 @@ $(document).ready(function() {
 
 
         {% for message in message %}
-            <div class="dashone">
-                <div class="dashtwo">
-                    <div class="dashthree">
-                        <div class="dashcard"  id="card{{ message.id }}">
-                            <div class="card-bod">
-                                <p class="card-titl">{{message.date_sent}}</p>
-                                <p class="card-tex"> <b>{{message.text}}</b> </p>
+            <div class="row ">
+                <div class="col-md-5 mx-auto">
+                    <div class="card mb-5  p-3 mx-auto " style="border-color:#87CEEB; border-radius: 10px;"   id="card{{ message.id }}">
+                        <div class="card-bod">
+                            {%  if request.user.is_staff and request.user.is_superuser %}
+                                <div class="mb-4"><i><b>{{message.device}}></b></i></div>
+                            {% endif %}
+                            <p class="card-titl">{{message.date_sent}}</p>
+                            <p class="card-tex"> <b>{{message.text}}</b> </p>
+                        </div>
+                        <div class=" text-cente">
+                            <hr>
+                            <div id="refresh{{ message.id }}" >
+                                {% include 'like_post.html' %}
                             </div>
-                            <div class="card-foote text-cente">
-                                <hr>
-                                <div id="refresh{{ message.id }}" >
-                                    {% include 'like_post.html' %}
-                                </div>
-                                <div>
-                                    <button class="button-one button unique float-right"  style="font-size:20px; margin-top: 8px; color: #0088cc" id="archive{{message.id}}" ><i class="fas fa-archive"></i></button>
-                                    {% csrf_token %}
-                                    <script type="text/javascript">
-                                        $(document).ready(function() {
-                                            $("#body").on("click", "#archive{{message.id}}", function(){
-                                                $("#card{{ message.id }}").hide(1000, function(){ $("#card{{ message.id }}").remove(); });
-                                                var request= new XMLHttpRequest();
-                                                request.open('POST', "{% url 'anon:archive' user message.id %}");
-                                                request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
-                                                request.send();
-                                                $(".king").load(window.location.href + " .my" );
-                                            });
+                            <div>
+                                <button class="button-one button unique float-right"  style="font-size:20px; margin-top: 8px; color: #0088cc" id="archive{{message.id}}"><i class="fas fa-archive"></i></button>
+                               {% csrf_token %}
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("#body").on("click", "#archive{{message.id}}", function(){
+                                            $("#card{{ message.id }}").hide(1000, function(){ $("#card{{ message.id }}").remove(); });
+                                            var request= new XMLHttpRequest();
+                                            request.open('POST', "{% url 'anon:archive' user message.id %}");
+                                            request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                                            request.send();
+                                            $(".king").load(window.location.href + " .my" );
                                         });
-                                    </script>
+                                    });
+                                </script>
+                            </div>
+                            <div>
+                                <button class="button-one  button float-right" data-toggle="modal" data-target="#exampleModal{{message.id}}"  style="font-size:20px; margin-top: 8px; margin-right: 13px;"  ><i class="far fa-trash-alt"></i></button>
+                                 <div class="modal fade" id="exampleModal{{message.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Message</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                        Are you sure you want to permanently delete this message?
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" id="delete{{message.id}}"  data-dismiss="modal" aria-label="Close" class="btn btn-danger unique">Delete</button>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div>
-                                    <button class="button-one unique button float-right"  style="font-size:20px; margin-top: 8px; margin-right: 16px;" id="delete{{message.id}}" ><i class="far fa-trash-alt"></i></button>
-                                    {% csrf_token %}
-                                    <script type="text/javascript">
-                                        $(document).ready(function() {
-                                             $("#body").on("click", "#delete{{message.id}}", function(){
-                                                var userselection = confirm("Are you sure you want to delete this message permanently?");
-                                                if (userselection == true){
-                                                    $("#card{{ message.id }}").hide(1000, function(){ $("#card{{ message.id }}").remove(); });
-                                                    var request= new XMLHttpRequest();
-                                                    request.open('POST', "{% url 'anon:delete' user message.id %}");
-                                                    request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
-                                                    request.send();
-                                                }
-                                            });
+                                {% csrf_token %}
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                         $("#body").on("click", "#delete{{message.id}}", function(){
+                                            $("#card{{ message.id }}").hide(1000, function(){ $("#card{{ message.id }}").remove(); });
+                                            var request= new XMLHttpRequest();
+                                            request.open('POST', "{% url 'anon:delete' user message.id %}");
+                                            request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                                            request.send();
                                         });
-                                    </script>
-                                    <!--    $("#body").load(location.href+" #body>*","") -->
-                                </div>
+                                    });
+                                </script>
+                                <!--    $("#body").load(location.href+" #body>*","") -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         {% empty %}
-            <div class="dashone" >
-                <div class="dashtwo">
-                    <div class="dashthree">
-                        <div class="dashcard">
-                            <div class="card-bod  border border-light p-3 text-center">                                
-                                <div class="d-flex justify-content-around ">
-                                    <b class="text-center">Your got no message yet, share your link to you friends to start receiving messages ...</b>
-
-                                </div>
-                                <div class=" mx-auto col-sm-9">
-                  <table class="table table-hover">
-    <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-
-      </tr>
-
-    </tbody>
-                      <tfoot>
-      <tr>
-        Share
-      </tr>
-    </tfoot>
-  </table>
-                                    <div class="card-footer ">LINK</div>
-            </div>
-                                <div class='container ' style="color:black; text-align:centre;">
-                                        <i class="fa fa-envelope" style="font-size:100px; display: inline-block"></i>
-                                </div>                                
+            <div class="row ">
+                <div class="col-md-6 mx-auto">
+                    <div class="card mb-5  p-3 mx-auto ">
+                        <div class="card-bod  border border-light p-3 text-center">
+                            <div class="d-flex justify-content-around ">
+                                <b class="text-center">You have no message yet, share your link to  friends to start receiving messages ...</b>
                             </div>
-                       </div>
+                            <div class=" mx-auto col-sm-9">
+                                 <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                   <td><button class="btn" style="font-size:; background-color:#0088cc"><a style="font-size:; color:white" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fconceal.com%2F{{user}}&text=You%20see%20me%2C%20but%20I%20don%27t%20see%20you%F0%9F%99%88.%20Got%20anything%20to%20tell%20me%3F%20Write%20me%20an%20anonymous%20message%F0%9F%91%91%F0%9F%A4%AB">
+                                       <i class="fab fa-telegram-plane" style="font-size:; color:white"></i> share</a></button> <br> <span>Telegram</span>
+                                   </td>
+                                     <td><button class="btn" style="font-size:; background-color:#25d366"><a style="font-size:; color:white" target="_blank" href="https://api.whatsapp.com/send?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫 https://conceal.com/{{user}}">
+                                       <i class="fab fa-whatsapp" style="font-size:; color:white"></i> share</a></button> <br> <span>Whatsapp</span>
+                                   </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fconceal.com%2F{{user}}&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                                        <br> <span>Facebook</span>
+                                    </td>
+                                    <td><button class="btn" style="font-size:; background-color:#00acee"><a style="font-size:; color:white" target="_blank"
+                                        href="http://twitter.com/share?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫&url=https://conceal.com/{{user}}&hashtags=conceal">
+                                       <i class="fab fa-twitter" style="font-size:; color:white"></i> tweet</a></button> <br> <span>Twitter</span>
+                                   </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    Share with:
+                                </tr>
+                            </tfoot>
+                        </table>
+                                Copy link <div class="d-flex justify-content-around card text-center mx-auto btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{url}}/{{user}}" title="copy"><b>{{url}}/{{user}}</b></div>
+                            </div>
+                            <div class='container ' style="color:black; text-align:centre;">
+                                    <i class="fa fa-envelope" style="font-size:100px; display: inline-block"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -311,19 +345,56 @@ $(document).ready(function() {
         <div class="mx-auto text-center">
             <div class="mx-auto text-center" id="choice_loader"></div>
         </div>
-        {% if message%}
+        {% if message %}
             <script type="text/javascript">
-                $(document).ready(function() {            
+                $(document).ready(function() {
                     $("#body").on("click", ".unique", function(){
                         if (document.getElementsByClassName('unique').length == 2) {
                             $("#choice_loader").replaceWith( (' <div class="spinner-grow text-center text-danger mx-auto" role="status"><span class="sr-only text-center mx-auto">Loading...</span></div>') );
-                            location.reload();                
-                        }                
-                    });        
-                });        
+                    function refresh(){
+                            location.reload();
+                    }
+                     setTimeout(refresh, 3000);
+                        }
+                    });
+                });
             </script>
-        {%endif%}
+        {% endif %}
     </div>
+
+    {% if zero and message %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <div class="modal-title mx-auto" id="exampleModalLong">
+                            <div class="mx-auto">
+                                <i class="fab mx-auto fa-telegram" style="font-size:100px; color:#0088cc"></i>
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                      <b> Won't you like to receive your messages on your <span style="font-size:17px"> <i>personal telegram account / a telegram group ?</i></span></b>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="{% url 'anon:telegram' user %}" class="btn btn-primary">Activate your telegram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                function pop(){
+                    $("#exampleModal").modal('show');
+                }
+                setTimeout(pop, 3000);
+            });
+        </script>
+    {% endif %}
 
     </div>
 {% endblock %}

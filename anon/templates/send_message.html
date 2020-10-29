@@ -3,16 +3,16 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Send</title>
+        <title>Send 👑{{user}} an anonymous message - Conceal🙈</title>
         <link rel="stylesheet" href="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\css\bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static '\css\simplemde.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/hearth-button.css' %}">
         <link href="{%  static 'images/download.png' %}" rel="icon">
         <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <script type="text/javascript" src="{% static '\js\jquery-3.5.1.js' %}"></script>
-    <script type="text/javascript" src="{% static '\js\simplemde.min.js' %}"></script>
+
     <body id="home" class="container" style="background-image: url('/static/images/background.png');
                                 background-position: center center;
                                 background-repeat: no-repeat;
@@ -21,16 +21,16 @@
                                 background-color:#0088cc;
                                 padding-top:80px">
         <div class="mx-auto text-center" style=" margin: auto; padding-bottom: 50px;">           
-            <div class="row">
-                <div class="col-sm-6 mx-auto">
-                    <div class="card">
+             <div class="row ">
+                <div class="col-md-6 mx-auto">
+                    <div class="card  ">
                         <div class="card-body">
                             <form action="" class=" text-center needs-validation  border-light p- " method="post" novalidate>
                                 <a href="{% url 'anon:home' %}" class="logo mr-auto "><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" class="img-fluid"></a>
                                 <br/>
                                 <p class="mb-4"><b>Send a message to 👑{{user}} </b></p>
                                 {% if view %}
-                                <b class="h5">👑{{user}} wants you to view his messages. <a href="#view">Show</a></b>
+                                <b class="h5">👑{{user}} wants you to view some messages. <a href="#view">Show</a></b>
                                 {% endif %}
                                 {% csrf_token %}
                                 {% if messages %}
@@ -63,8 +63,8 @@
             <div id="view">
                 {% for message in message %}
                 <div class="mx-auto text-center" style=" margin: auto;">           
-                    <div class="row">
-                        <div class="col-sm-4 mx-auto">
+                     <div class="row ">
+                <div class="col-md-5 mx-auto">
                             <div class="card">
                                 <div class="card-body">
                                     <p class="card-title">{{message.date_sent}}</p>
@@ -84,7 +84,7 @@
                         <div class="col-sm-4 mx-auto">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-text"> <b>David has no message yet <a href="#send">send</a></b></p>
+                                    <p class="card-text"> <b>{{user}} has no message yet <a href="#send">send</a></b></p>
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ if os.environ.get('DJANGO_ENV', '') == 'production':
     # custom prod settings
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'anonymous.settings.prod')
 else:
-    # custom prod settings
+    # custom dev settings
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'anonymous.settings.dev')
 
 # This is django default settings

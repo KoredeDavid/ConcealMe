@@ -18,13 +18,12 @@
                             background-attachment: fixed;
                             background-size: cover;
                             background-color: #fffdd0;">
+         <br> <br> <br>
 
-
-        <div class="dashone" style="padding-top: 100px;">
-                <div class="dashtwo">
-                    <div class="dashthree">
-                <div class="dashcard">
-                    <form class="mx-auto needs-validation border-light p-3" method="post" novalidate >
+         <div class="row ">
+            <div class="col-md-6 mx-auto">
+                <div class="card card-body mb-5   mx-auto " style="border-color:#87CEEB; border-radius: 10px;">
+                    <form class="needs-validation " method="post" novalidate >
                         <div class="text-center">
                             <a href="{% url 'anon:home' %}" class="logo"><img  style="width:70px; height:70px" src="{% static 'images/download.png' %}" alt="" ></a>
                         </div>
@@ -65,7 +64,7 @@
                             </div>
                         {% if form.password1.errors %}                               
                             {% for error in form.password1.errors %}
-                                <p  class="error-messages"></p>{{ error }}</p>
+                                <p  class="error-messages">{{ error }}</p>
                             {% endfor %}                                
                         {% endif %}
                         
@@ -78,12 +77,17 @@
                                     <p  class="mb-1 error-messages">{{ error }}</p>
                                 {% endfor %}                                
                             {% endif %}                
-                        <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+                        <button class="btn btn-info btn-block my-4" type="submit">Join</button>
+                        <div class="card-footer text-center">
+                            <p>Have an account?
+                                <a href="{% url 'anon:sign_in' %}">Login</a>
+                            </p>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-       </div>
+
        <script type="text/javascript">
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {

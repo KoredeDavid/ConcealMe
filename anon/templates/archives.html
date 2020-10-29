@@ -6,69 +6,84 @@
     <h4 class="text-center mx-auto" style="background-color:white; align-content: center;">👑{{user}} | Archives<i style="color: #0088cc;" class="fas fa-archive"></i> </h4>
     <div id="body" >
         {% for message in message %}
-            <div class="dashone">
-                <div class="dashtwo">
-                    <div class="dashthree">
-                        <div class="dashcard"  id="refresh_card{{ message.id }}">
-                            <div class="card-bod">
-                                <p class="card-titl">{{message.date_sent}}</p>
-                                <p class="card-tex"> <b>{{message.text}}</b> </p>
+            <div class="row ">
+                <div class="col-md-5 mx-auto">
+                    <div class="card mb-5  p-3 mx-auto" style="border-color:#87CEEB; border-radius: 10px;"  id="refresh_card{{ message.id }}">
+                        <div class="card-bod">
+                            <p class="card-titl">{{message.date_sent}}</p>
+                            <p class="card-tex"> <b>{{message.text}}</b> </p>
+                        </div>
+                        <div class="card-foote text-cente">
+                            <hr>
+                            <div>
+                                <button   style="font-size:20px; margin-top: 8px; color: #0088cc" class="button-one button unique float-right" id="un_archive{{message.id}}"  ><i class="fas fa-archive"></i></button>
+                                {% csrf_token %}
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("#body").on("click", "#un_archive{{message.id}}", function(){
+                                            $("#refresh_card{{ message.id }}").hide(1000, function(){ $("#refresh_card{{ message.id }}").remove(); });
+                                            $("#un_archive{{ message.id }}").hide(1000, function(){ $("#un_archive{{ message.id }}").remove(); });
+                                            var request= new XMLHttpRequest();
+                                            request.open('POST', "{% url 'anon:archive' user message.id %}");
+                                            request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                                            request.send();
+                                        });
+                                    });
+                                </script>
+                                 <!--    $("#body").load(location.href+" #body>*","") -->
                             </div>
-                            <div class="card-foote text-cente">
-                                <hr>
-                                <div>
-                                    <button   style="font-size:20px; margin-top: 8px; color: #0088cc" class="button-one button unique float-right" id="un_archive{{message.id}}"  ><i class="fas fa-archive"></i></button>
-                                    {% csrf_token %}
-                                    <script type="text/javascript">
-                                        $(document).ready(function() {
-                                            $("#body").on("click", "#un_archive{{message.id}}", function(){
-                                                $("#refresh_card{{ message.id }}").hide(1000, function(){ $("#refresh_card{{ message.id }}").remove(); });
-                                                var request= new XMLHttpRequest();
-                                                request.open('POST', "{% url 'anon:archive' user message.id %}");
-                                                request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
-                                                request.send();
-                                            });
-                                        });
-                                    </script>
-                                     <!--    $("#body").load(location.href+" #body>*","") -->
+                            <div>
+                                <button  style="font-size:20px; margin-top: 8px; margin-right: 16px" class="button-one button   float-right" data-toggle="modal" data-target="#exampleModal{{message.id}}"  ><i class="far fa-trash-alt"></i></button>
+                                <div class="modal fade" id="exampleModal{{message.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Message</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to permanently delete this message?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" id="delete{{message.id}}"  data-dismiss="modal" aria-label="Close" class="btn btn-danger unique " >Delete</button>
+                                            </div>
+                                        </div>
+                                     </div>
                                 </div>
-                                <div>
-                                    <button  style="font-size:20px; margin-top: 8px; margin-right: 16px" class="button-one button  unique float-right" id="delete{{message.id}}"  ><i class="far fa-trash-alt"></i></button>
-                                    {% csrf_token %}
-                                    <script type="text/javascript">
-                                        $(document).ready(function() {
-                                             $("#body").on("click", "#delete{{message.id}}", function(){
-                                                var userselection = confirm("Are you sure you want to delete this message permanently?");
-                                                if (userselection == true){
-                                                    $("#refresh_card{{ message.id }}").hide(1000, function(){ $("#refresh_card{{ message.id }}").remove(); });
-                                                    var request= new XMLHttpRequest();
-                                                    request.open('POST', "{% url 'anon:delete' user message.id %}");
-                                                    request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
-                                                    request.send();
-                                                    // $("#body").load(location.href+" #body>*","")
-                                                }
-                                            });
+                                {% csrf_token %}
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+
+                                         $("#body").on("click", "#delete{{message.id}}", function(){
+                                            $("#refresh_card{{ message.id }}").hide(1000, function(){ $("#refresh_card{{ message.id }}").remove(); });
+                                            var request= new XMLHttpRequest();
+                                            request.open('POST', "{% url 'anon:delete' user message.id %}");
+                                            request.setRequestHeader('X-CSRFToken', "{{csrf_token}}");
+                                            request.send();
+                                            // $("#body").load(location.href+" #body>*","")
                                         });
-                                    </script>
-                                </div>
+
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="dashone" style="padding-top:100px">
-                <div class="dashtwo">
-                    <div class="dashthree">
-                        <div class="dashcard" >
-                            <div class="card-body  border border-light p-5 text-center">
-                                
-                                <div class="d-flex justify-content-around ">
-                                    <b class="text-center">Your archived messages will appear here</b>
-                                </div>
-                                <div class='container ' style="color:#0088cc; text-align:centre;">
-                                    <i class="fas fa-archive" style="font-size:100px;  display: inline-block"></i>
-                                </div>
+            <div class="row mt-5">
+                <div class="col-md-5 mx-auto">
+                    <div class="card mb-5  p-3 mx-auto " >
+                        <div class="card-body  border border-light p-5 text-center">
+
+                            <div class="d-flex justify-content-around ">
+                                <b class="text-center">Your archived messages will appear here</b>
+                            </div>
+                            <div class='container ' style="color:#0088cc; text-align:centre;">
+                                <i class="fas fa-archive" style="font-size:100px;  display: inline-block"></i>
                             </div>
                         </div>
                     </div>
@@ -110,17 +125,25 @@
         <div class="mx-auto text-center">
             <div class="mx-auto text-center" id="choice_loader"></div>
         </div>
-        {% if message%}
+        {% if message %}
             <script type="text/javascript">
                 $(document).ready(function() {
                     $("#body").on("click", ".unique", function(){
                         if (document.getElementsByClassName('unique').length == 2) {
                             $("#choice_loader").replaceWith( (' <div class="spinner-grow text-center text-danger mx-auto" role="status"><span class="sr-only text-center mx-auto">Loading...</span></div>') );
+                    function refresh(){
                             location.reload();
+                    }
+                     setTimeout(refresh, 3000);
                         }
                     });
                 });
             </script>
-        {%endif%}
+        {% endif %}
+        <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     </div>
 {% endblock %}
