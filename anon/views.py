@@ -32,6 +32,7 @@ def get_last_chat_id_and_text(request):
         text = updates["message"]["text"]
         chat_id = updates["message"]["chat"]["id"]
         chat_id = str(chat_id)
+        print(text)
         if text in CustomUser.objects.all().values_list('anon_user_id', flat=True):
             print('im alive')
             from .telegram import send_telegram_message2
