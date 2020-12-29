@@ -5,7 +5,7 @@ from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'TRUE')
 
-ALLOWED_HOSTS = ['https://concealme.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['concealme.herokuapp.com/', '127.0.0.1']
 
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware',)
 
