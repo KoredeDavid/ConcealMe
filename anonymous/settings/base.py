@@ -67,7 +67,7 @@ ROOT_URLCONF = 'anonymous.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["Anonymous/templates/"],
+        'DIRS': ["anonymous/templates/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
