@@ -109,7 +109,7 @@ def register(request):
     else:
         form = CustomUserCreationForm()
         # telegram_form = TelegramForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'Register.html', {'form': form})
 
 
 def sign_in(request):
