@@ -91,20 +91,20 @@
                         <table class="table table-hover">
                             <tbody>
                                 <tr>
-                                   <td><button class="btn" style="font-size:; background-color:#0088cc"><a style="font-size:; color:white" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fconceal.com%2F{{user}}&text=You%20see%20me%2C%20but%20I%20don%27t%20see%20you%F0%9F%99%88.%20Got%20anything%20to%20tell%20me%3F%20Write%20me%20an%20anonymous%20message%F0%9F%91%91%F0%9F%A4%AB">
+                                   <td><button class="btn" style="font-size:; background-color:#0088cc"><a style="font-size:; color:white" target="_blank" href="https://t.me/share/url?url={{url}}{{user}}&text=You%20see%20me%2C%20but%20I%20don%27t%20see%20you%F0%9F%99%88.%20Got%20anything%20to%20tell%20me%3F%20Write%20me%20an%20anonymous%20message%F0%9F%91%91%F0%9F%A4%AB">
                                        <i class="fab fa-telegram-plane" style="font-size:; color:white"></i> share</a></button> <br> <span>Telegram</span>
                                    </td>
-                                     <td><button class="btn" style="font-size:; background-color:#25d366"><a style="font-size:; color:white" target="_blank" href="https://api.whatsapp.com/send?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫 https://conceal.com/{{user}}">
+                                     <td><button class="btn" style="font-size:; background-color:#25d366"><a style="font-size:; color:white" target="_blank" href="https://api.whatsapp.com/send?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫 {{url}}{{user}}">
                                        <i class="fab fa-whatsapp" style="font-size:; color:white"></i> share</a></button> <br> <span>Whatsapp</span>
                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fconceal.com%2F{{user}}&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                                        <iframe src="https://www.facebook.com/plugins/share_button.php?href={{url}}{{user}}&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                                         <br> <span>Facebook</span>
                                     </td>
                                     <td><button class="btn" style="font-size:; background-color:#00acee"><a style="font-size:; color:white" target="_blank"
-                                        href="http://twitter.com/share?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫&url=https://conceal.com/{{user}}&hashtags=conceal">
+                                        href="http://twitter.com/share?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫&url={{url}}{{user}}&hashtags=conceal">
                                        <i class="fab fa-twitter" style="font-size:; color:white"></i> tweet</a></button> <br> <span>Twitter</span>
                                    </td>
                                 </tr>
@@ -115,7 +115,7 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        Copy link <div class="card-footer btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{url}}/{{user}}" title="copy"><b>{{url}}/{{user}}</b></div>
+                        Copy link <div class="card-footer btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{url}}{{user}}" title="copy"><b>{{url}}{{user}}</b></div>
                     </div>
                 </div>
             </div>
@@ -258,32 +258,31 @@
 
         {% empty %}
             <div class="row ">
-                <div class="col-md-6 mx-auto">
-                    <div class="card mb-5  p-3 mx-auto ">
-                        <div class="card-bod  border border-light p-3 text-center">
-                            <div class="d-flex justify-content-around ">
-                                <b class="text-center">You have no message yet, share your link to  friends to start receiving messages ...</b>
-                            </div>
-                            <div class=" mx-auto col-sm-9">
-                                 <table class="table table-hover">
+                <div class="col-md-5 mx-auto">
+                    <div class="card card-body mx-auto text-center">                        
+                        <div class="d-flex justify-content-around ">
+                            <b class="text-center">You have no message yet, share your link to  friends to start receiving messages ...</b>
+                        </div>
+                        
+                        <table class="table table-hover">
                             <tbody>
                                 <tr>
-                                   <td><button class="btn" style="font-size:; background-color:#0088cc"><a style="font-size:; color:white" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fconceal.com%2F{{user}}&text=You%20see%20me%2C%20but%20I%20don%27t%20see%20you%F0%9F%99%88.%20Got%20anything%20to%20tell%20me%3F%20Write%20me%20an%20anonymous%20message%F0%9F%91%91%F0%9F%A4%AB">
-                                       <i class="fab fa-telegram-plane" style="font-size:; color:white"></i> share</a></button> <br> <span>Telegram</span>
-                                   </td>
-                                     <td><button class="btn" style="font-size:; background-color:#25d366"><a style="font-size:; color:white" target="_blank" href="https://api.whatsapp.com/send?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫 https://conceal.com/{{user}}">
-                                       <i class="fab fa-whatsapp" style="font-size:; color:white"></i> share</a></button> <br> <span>Whatsapp</span>
-                                   </td>
+                                    <td><button class="btn" style="font-size:; background-color:#0088cc"><a style="font-size:; color:white" target="_blank" href="https://t.me/share/url?url={{url}}{{user}}&text=You%20see%20me%2C%20but%20I%20don%27t%20see%20you%F0%9F%99%88.%20Got%20anything%20to%20tell%20me%3F%20Write%20me%20an%20anonymous%20message%F0%9F%91%91%F0%9F%A4%AB">
+                                        <i class="fab fa-telegram-plane" style="font-size:; color:white"></i> share</a></button> <br> <span>Telegram</span>
+                                    </td>
+                                        <td><button class="btn" style="font-size:; background-color:#25d366"><a style="font-size:; color:white" target="_blank" href="https://api.whatsapp.com/send?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫 {{url}}{{user}}">
+                                        <i class="fab fa-whatsapp" style="font-size:; color:white"></i> share</a></button> <br> <span>Whatsapp</span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fconceal.com%2F{{user}}&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                                        <iframe src="https://www.facebook.com/plugins/share_button.php?href={{url}}{{user}}&layout=button&size=large&width=77&height=28&appId" width="77" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                                         <br> <span>Facebook</span>
                                     </td>
                                     <td><button class="btn" style="font-size:; background-color:#00acee"><a style="font-size:; color:white" target="_blank"
-                                        href="http://twitter.com/share?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫&url=https://conceal.com/{{user}}&hashtags=conceal">
-                                       <i class="fab fa-twitter" style="font-size:; color:white"></i> tweet</a></button> <br> <span>Twitter</span>
-                                   </td>
+                                        href="http://twitter.com/share?text=You see me, but I don't see you🙈. Got anything to tell me? Write me an anonymous message👑🤫&url={{url}}{{user}}&hashtags=conceal">
+                                        <i class="fab fa-twitter" style="font-size:; color:white"></i> tweet</a></button> <br> <span>Twitter</span>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -292,12 +291,11 @@
                                 </tr>
                             </tfoot>
                         </table>
-                                Copy link <div class="d-flex justify-content-around card text-center mx-auto btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{url}}/{{user}}" title="copy"><b>{{url}}/{{user}}</b></div>
-                            </div>
-                            <div class='container ' style="color:black; text-align:centre;">
-                                    <i class="fa fa-envelope" style="font-size:100px; display: inline-block"></i>
-                            </div>
-                        </div>
+                        Copy link <div class="card-footer btn-copy js-tooltip js-copy" data-toggle="tooltip" data-placement="top" data-copy="{{url}}{{user}}" title="copy"><b>{{url}}{{user}}</b></div>
+                    
+                        <div class='container ' style="color:black; text-align:centre;">
+                            <i class="fa fa-envelope" style="font-size:100px; display: inline-block"></i>
+                        </div>                                
                     </div>
                 </div>
             </div>

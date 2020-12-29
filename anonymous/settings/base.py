@@ -24,6 +24,9 @@ def get_secret_setting(setting, secrets=secrets):
         raise ImproperlyConfigured("Set the {} setting".format(setting))
 
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', "@6n7rh6c=vpc*kf%8+x+vg8w&pu$#bh+*@16p3q@cd*)*rf*5#")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

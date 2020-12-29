@@ -10,7 +10,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',)
+    list_display = ('username', 'email', 'anon_user_id', 'first_name', 'last_name', 'is_staff',)
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     fieldsets = (
         (None, {'fields': ('username', 'password',)}),
@@ -47,7 +47,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 
 class TelegramAdmin(admin.ModelAdmin):
-    list_display = ('user', 'anon_user_id', 'telegram_id', 'telegram_switch')
+    list_display = ('user',  'telegram_id', 'telegram_switch')
     search_fields = ('user', 'telegram_id')
 
 

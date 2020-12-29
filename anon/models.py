@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinLengthValidator
-
+from secrets import token_urlsafe
 
 @deconstructible
 class UnicodeUsernameValidator(validators.RegexValidator):
@@ -30,14 +30,26 @@ class CustomUser(AbstractUser):
             'unique': _("A user with that username already exists."),
         },
     )
-    display_name = models.CharField(max_length=30, default=" ")
+    display_name = models.CharField(max_length=30, editable=False)
+    anon_user_id = models.TextField(editable=False)
     email = models.EmailField(_('email address'), blank=False, null=True, unique=True)
     senders_view = models.BooleanField(blank=True, default=False)
 
-    def clean(self):
-        self.display_name = self.username
-        self.username = str(self.username.capitalize())
-        self.email = str(self.email.lower())
+    def save(self, *args, **kwargs):
+        if self.email is not None:
+            self.email = self.email.lower()
+        if self.username is not None:
+            try:
+                user = CustomUser.objects.get(id=self.id).username
+            except CustomUser.DoesNotExist:
+                user = ''
+            if self.username != user:
+                self.display_name = self.username
+                self.username = self.username.capitalize()
+                self.anon_user_id = f'Anon-{self.username}-{self.id}-{token_urlsafe(10)}'
+        super().save(*args, **kwargs)
+        self.anon_user_id = f'Anon-{self.username}-{self.id}-{token_urlsafe(10)}'
+        super().save(*args, **kwargs)
 
 
 """
@@ -68,12 +80,11 @@ class Messages(models.Model):
 class Telegram(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     telegram_id = models.TextField()
-    anon_user_id = models.TextField()
     telegram_switch = models.BooleanField(blank=True, default=False)
     telegram_choice = models.CharField(blank=True, default="3", max_length=1)
 
     def __str__(self):
-        return self.anon_user_id + ' ' + str(self.telegram_id)
+        return self.user.username + ' ' + str(self.telegram_id)
 
 
 class Feedback(models.Model):

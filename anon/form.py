@@ -26,6 +26,7 @@ class FeedbackForm(forms.ModelForm):
         model = Feedback
         fields = "__all__"
 
+
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': "Your Username", 'class': 'form-control', }))

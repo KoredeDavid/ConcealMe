@@ -1,7 +1,6 @@
 from .base import *
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret_setting('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'TRUE')
@@ -29,7 +28,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+# EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
 EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -43,3 +42,6 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
+import dj_database_url
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)

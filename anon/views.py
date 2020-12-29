@@ -32,20 +32,21 @@ def get_last_chat_id_and_text(request):
         text = updates["message"]["text"]
         chat_id = updates["message"]["chat"]["id"]
         chat_id = str(chat_id)
-        if text in Telegram.objects.all().values_list('anon_user_id', flat=True):
+        if text in CustomUser.objects.all().values_list('anon_user_id', flat=True):
             from .telegram import send_telegram_message2
             url = os.environ.get('WEB_URL', "")
-            my_username = str(Telegram.objects.get(anon_user_id=text).user)
-            exists = Telegram.objects.filter(user__username=my_username, telegram_id=chat_id,
-                                             anon_user_id=text).exists()
+            my_username = str(CustomUser.objects.get(anon_user_id=text).user)
+            exists = CustomUser.objects.filter(username=my_username, anon_user_id=text).exists() and Telegram.objects.filter(user__username=my_username, telegram_id=chat_id).exists()
             if not exists:
                 print('ok')
-                if Telegram.objects.get(user__username=my_username).anon_user_id == text:
+                if CustomUser.objects.get(username=my_username).anon_user_id == text:
                     update = Telegram.objects.get(user__username=my_username)
                     update.telegram_id = chat_id
                     update.telegram_switch = True
+                    update_anon_user_id = CustomUser.objects.get(username=my_username, anon_user_id=text)
                     if "-" in str(chat_id):
-                        update.anon_user_id = f"Anon-{my_username}-{token_urlsafe(10)}"
+                        update_anon_user_id.anon_user_id = f"Anon-{my_username}-{token_urlsafe(10)}"
+                    update_anon_user_id.save()
                     update.save()
                     print(text + ' ' + str(chat_id))
                     send_telegram_message2(
@@ -97,7 +98,7 @@ def register(request):
             my_username = form.cleaned_data.get('username')
             user = CustomUser.objects.get(username__iexact=my_username)
             user_id = CustomUser.objects.get(username__iexact=my_username).id
-            t_form.anon_user_id = 'Anon-{}-{}-{}'.format(my_username, user_id, token_urlsafe(10))
+            # t_form.anon_user_id = 'Anon-{}-{}-{}'.format(my_username, user_id, token_urlsafe(10))
             t_form.user = user
             t_form.telegram_id = '0'
             t_form.save()
@@ -158,10 +159,12 @@ def update_profile(request, my_username):
             update = CustomUserChangeForm(request.POST, instance=user)
             if update.is_valid():
                 update.save()
+                """
                 update_anon_user_id = Telegram.objects.get(user__id=user.id)
-                new_user = CustomUser.objects.get(id=user.id).username
                 update_anon_user_id.anon_user_id = 'Anon-{}-{}-{}'.format(new_user, user.id, token_urlsafe(10))
                 update_anon_user_id.save()
+                """
+                new_user = CustomUser.objects.get(id=user.id).username
                 messages.success(request, 'Profile updated successfully')
                 return redirect('anon:dashboard', new_user)
         else:
@@ -203,7 +206,7 @@ def dashboard(request, my_username):
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
-        anon_user_id = Telegram.objects.get(user=user).anon_user_id
+        anon_user_id = CustomUser.objects.get(username=user).anon_user_id
         message = Messages.objects.filter(user=user, archives=False).order_by('-date_sent')
         zero = Telegram.objects.get(user=user).telegram_id == "0"
         switch = Telegram.objects.get(user=user).telegram_switch
@@ -389,7 +392,7 @@ def telegram(request, my_username):
     if request.user.is_authenticated and request.user == valid:
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         zero = Telegram.objects.get(user=user).telegram_id == "0"
-        telegram_id = Telegram.objects.get(user=user).anon_user_id
+        telegram_id = CustomUser.objects.get(username=user).anon_user_id
         switch = Telegram.objects.get(user=user).telegram_switch
         choice = Telegram.objects.get(user=user).telegram_choice
         context = {

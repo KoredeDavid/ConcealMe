@@ -17,7 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
       
 
-        <link rel="stylesheet" href="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\css\bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static '/bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
         <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
         <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
@@ -34,43 +34,31 @@
         
        
     </head>
-    <script type="text/javascript" src="{% static '\js\jquery-3.5.1.js' %}"></script>
-    <script type="text/javascript" src="{% static '\bootstrap-4.4.1-dist\bootstrap-4.4.1-dist\js\bootstrap.min.js' %}"></script>   
+    <script type="text/javascript" src="{% static '/js/jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static '/bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js' %}"></script>   
       
       <body>
       
         <!-- ======= Header ======= -->
         <header id="header" class="header-transparent">
-          <div class="container">
-      
-            <div id="logo" class="pull-left">
-              <!-- Uncomment below if you prefer to use a text logo -->
-              <h1><a href="/">Conceal</a></h1>
-            </div>
-             
-            <nav id="nav-menu-container">
-                <ul class="nav-menu">
-                    
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Features</a></li>
-                    <li><a href="#portfolio">Jpegs</a></li>                
-               
-                    <li><a href="#contact">Contact Us</a></li>
-              </ul>
-            </nav><!-- #nav-menu-container -->
-
-        <nav style="float: right;padding-right: 40px;" id="nav-menu-containe">
-            <ul class="nav-menu">
-                <li class="menu-has-children"><a class="" href="#">Join <br> Login</a>
-                    <ul >
-                        <li><a href="/register">Join</a></li>
-                        <li><a href="/login">Login</a></li>
-
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        </div>
+			<div class="container">
+		
+				<div id="logo" class="pull-left">
+				<!-- Uncomment below if you prefer to use a text logo -->
+				<h1><a href="/">Conceal</a></h1>
+				</div>
+				
+				<nav id="nav-menu-container">
+					<ul class="nav-menu">				
+						<li><a href="/register">Join</a></li>
+						<li><a href="/login">Login</a></li>                          															
+						<li><a href="#about">About Us</a></li>
+						<li><a href="#services">Features</a></li>
+						<li><a href="#portfolio">Jpegs</a></li>                				
+						<li><a href="#contact">Contact Us</a></li>
+					</ul>
+				</nav><!-- #nav-menu-container -->			
+			</div>
         </header><!-- End Header -->
        
         <!-- ======= Hero Section ======= -->

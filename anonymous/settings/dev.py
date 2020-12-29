@@ -1,7 +1,7 @@
 from .base import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@6n7rh6c=vpc*kf%8+x+vg8w&pu$#bh+*@16p3q@cd*)*rf*5#'
+#SECRET_KEY = '@6n7rh6c=vpc*kf%8+x+vg8w&pu$#bh+*@16p3q@cd*)*rf*5#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,12 +36,13 @@ else:
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-SERVER_EMAIL = 'mrconceal@gmail.com'
+SERVER_EMAIL = 'test@gmail.com'
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
 
 ADMINS = [
-    ('KoredeDavid', 'koredeoluwashola@gmail.com'),
-    ('Conceal', 'mrconceal@gmail.com'),
+    ('KoredeDavid', 'test@gmail.com'),
+    ('Conceal', 'test@gmail.com'),
 ]
 
 MANAGERS = ADMINS
+ 
