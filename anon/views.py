@@ -33,13 +33,15 @@ def get_last_chat_id_and_text(request):
         chat_id = updates["message"]["chat"]["id"]
         chat_id = str(chat_id)
         if text in CustomUser.objects.all().values_list('anon_user_id', flat=True):
+            print('im alive')
             from .telegram import send_telegram_message2
             url = os.environ.get('WEB_URL', "")
-            my_username = str(CustomUser.objects.get(anon_user_id=text).user)
+            my_username = str(CustomUser.objects.get(anon_user_id=text).username)
             exists = CustomUser.objects.filter(username=my_username, anon_user_id=text).exists() and Telegram.objects.filter(user__username=my_username, telegram_id=chat_id).exists()
             if not exists:
-                print('ok')
-                if CustomUser.objects.get(username=my_username).anon_user_id == text:
+                print(text)
+                if str(CustomUser.objects.get(username=my_username).anon_user_id) == text:
+                    print('big deal')
                     update = Telegram.objects.get(user__username=my_username)
                     update.telegram_id = chat_id
                     update.telegram_switch = True
@@ -47,7 +49,9 @@ def get_last_chat_id_and_text(request):
                     if "-" in str(chat_id):
                         update_anon_user_id.anon_user_id = f"Anon-{my_username}-{token_urlsafe(10)}"
                     update_anon_user_id.save()
+                    print('saved1')
                     update.save()
+                    print('saved2')
                     print(text + ' ' + str(chat_id))
                     send_telegram_message2(
                         'Welcome 👑{}, you will receive 3 anonymous messages per notification on your telegram '
@@ -56,6 +60,7 @@ def get_last_chat_id_and_text(request):
                         'telegram settings. Share your link ({}) to your friends and let them shake tables😀'.format
                         (my_username, url + my_username + '/telegram', url + my_username), str(chat_id))
             else:
+                print('bla')
                 send_telegram_message2('👑{}, your telegram chat id has already been registered. Access, '
                                        '{} to edit your '
                                        'telegram settings.'.format(my_username, url + my_username + '/telegram'),
