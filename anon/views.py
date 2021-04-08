@@ -38,7 +38,9 @@ def get_last_chat_id_and_text(request):
             from .telegram import send_telegram_message2
             url = os.environ.get('WEB_URL', "")
             my_username = str(CustomUser.objects.get(anon_user_id=text).username)
-            exists = CustomUser.objects.filter(username=my_username, anon_user_id=text).exists() and Telegram.objects.filter(user__username=my_username, telegram_id=chat_id).exists()
+            exists = CustomUser.objects.filter(username=my_username,
+                                               anon_user_id=text).exists() and Telegram.objects.filter(
+                user__username=my_username, telegram_id=chat_id).exists()
             if not exists:
                 print(text)
                 if str(CustomUser.objects.get(username=my_username).anon_user_id) == text:
@@ -532,8 +534,8 @@ def send_message(request, my_username):
 
                 if count % int(telegram_choices) == 0:
                     amount_of_messages_to_send = (message[:choice][::-1])
-                    amount_of_messages_to_send.insert(0, f"{user}👑 anonymous messages, from conceal.🙈")
-                    amount_of_messages_to_send.append(f"This is your link {url}{user} 👑")
+                    amount_of_messages_to_send.insert(0, f"**{user}👑 anonymous messages, from conceal.🙈**")
+                    amount_of_messages_to_send.append(f"*This is your link {url}{user}* 👑")
                     send_telegram_message(amount_of_messages_to_send, chat)
 
             return redirect("/{}/#home".format(user))
