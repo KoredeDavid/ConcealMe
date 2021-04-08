@@ -12,6 +12,8 @@
     </head>
 
     <script type="text/javascript" src="{% static '/js/jquery-3.5.1.js' %}"></script>
+    <script type="text/javascript" src="{% static '/bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js' %}"></script>
+
 
     <body id="home" class="container" style="background-image: url('/static/images/background.png');
                                 background-position: center center;
@@ -20,6 +22,22 @@
                                 background-size: cover;
                                 background-color:#0088cc;
                                 padding-top:80px">
+
+        {% if  request.user == user %}
+            <div class="mx-auto text-center pb-5" style=" margin: auto;">
+                <div class="row ">
+                    <div class="col-md-5 mx-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="btn card-text btn-primary " id="center" href="{% url 'anon:dashboard' request.user %}" >Continue to your dashboard {{request.user}}</a>
+                            </div>
+                            <div class="card-footer text-center"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="mx-auto text-center" style=" margin: auto; padding-bottom: 50px;">           
              <div class="row ">
                 <div class="col-md-6 mx-auto">
@@ -144,8 +162,8 @@
       }, false);
     })();
     </script>
-    {% if request.user.username == user %}
 
+    {% if  request.user == user %}
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -159,23 +177,18 @@
                         Welcome 👑{{request.user}}
                     </div>
                     <div class="modal-footer">
-                    <a href="{% url 'anon:dashboard' request.user %}" type="button" class="btn btn-primary">Continue to dashboard</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">or Send a message to yourself</button>
+                        <a href="{% url 'anon:dashboard' request.user %}" type="button" class="btn btn-primary">Continue to dashboard</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">or Send a message to yourself</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-<script>
 
-	$(document).ready(function(){
-	    function popup(){
+        <script>
 	        $("#exampleModalCenter").modal('show');
-	    }
+        </script>
+    {% endif %}
 
-
-	});
-</script>
-         {% endif %}
     </body>
 </html>
 
