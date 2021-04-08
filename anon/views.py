@@ -534,8 +534,8 @@ def send_message(request, my_username):
 
                 if count % int(telegram_choices) == 0:
                     amount_of_messages_to_send = (message[:choice][::-1])
-                    amount_of_messages_to_send.insert(0, f"**{user}👑 anonymous messages, from conceal.🙈**")
-                    amount_of_messages_to_send.append(f"*This is your link {url}{user}* 👑")
+                    amount_of_messages_to_send.insert(0, f"{user}👑 anonymous messages, from conceal.🙈\n")
+                    amount_of_messages_to_send.append(f"This is your link {url}{user} 👑")
                     send_telegram_message(amount_of_messages_to_send, chat)
 
             return redirect("/{}/#home".format(user))
