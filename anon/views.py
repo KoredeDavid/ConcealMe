@@ -84,6 +84,8 @@ def home(request):
             messages.success(request, 'Message Sent')
             return redirect('/#contact')
     else:
+        if request.user.is_authenticated:
+            return redirect('anon:dashboard', request.user.username)
         form = FeedbackForm()
     return render(request, 'home.html', {"form": form})
 
