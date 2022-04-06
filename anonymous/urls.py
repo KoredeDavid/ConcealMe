@@ -24,6 +24,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path(os.environ.get('ADMIN_URL', "admin/"), admin.site.urls),
+
     path('reset/',
          auth_views.PasswordResetView.as_view(
              template_name='registration/password_reset.html',
@@ -43,19 +44,11 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
          name='password_reset_complete'),
 
+    path('api/', include('anon_api.urls')),
+
     path('', include('anon.urls')),
-    # path('account/', include('allauth.urls')),
 
 ]
 
-"""
-if os.environ.get("DJANGO_ENV", '') == 'production':
-    handler404 = 'anon.views.error_404'
-    handler500 = 'anon.views.error_500'
-    handler403 = 'anon.views.error_403'
-    handler400 = 'anon.views.error_400'
-"""
-
-# sys.path.append('C:\\Users\\USER\\Projects\\anonymous\\anon')
 
 

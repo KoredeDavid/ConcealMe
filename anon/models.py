@@ -1,4 +1,5 @@
 from django.core import validators
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.deconstruct import deconstructible
@@ -17,6 +18,11 @@ class UnicodeUsernameValidator(validators.RegexValidator):
 
 
 username_validator = UnicodeUsernameValidator()
+
+
+def max_value_validator(value):
+    if value > 9:
+        raise ValidationError('The maximum value is 10')
 
 
 class CustomUser(AbstractUser):
@@ -48,6 +54,7 @@ class CustomUser(AbstractUser):
                 self.username = self.username.capitalize()
                 self.anon_user_id = f'Anon-{self.username}-{self.id}-{token_urlsafe(10)}'
         super().save(*args, **kwargs)
+        Telegram.objects.get_or_create(user=self)
         self.anon_user_id = f'Anon-{self.username}-{self.id}-{token_urlsafe(10)}'
         super().save(*args, **kwargs)
 
@@ -63,12 +70,12 @@ CustomUser.objects.get(username='Wisdom').user.all()(The related name is 'user')
 
 class Messages(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user')
-    ip_address = models.GenericIPAddressField()
-    device = models.TextField(default="Fucks")
+    ip_address = models.GenericIPAddressField(default='Unknown', editable=False)
+    device = models.TextField(default="Unknown", editable=False)
     text = models.TextField(max_length=300)
     date_sent = models.DateTimeField(auto_now_add=True)
-    likes = models.BooleanField(blank=True, default=False)
-    archives = models.BooleanField(blank=True, default=False)
+    liked = models.BooleanField(blank=True, default=False)
+    archived = models.BooleanField(blank=True, default=False)
 
     class Meta:
         verbose_name_plural = "Messages"
@@ -78,10 +85,10 @@ class Messages(models.Model):
 
 
 class Telegram(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    telegram_id = models.TextField()
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    telegram_id = models.TextField(default="0")
     telegram_switch = models.BooleanField(blank=True, default=False)
-    telegram_choice = models.CharField(blank=True, default="3", max_length=1)
+    amount_of_messages_to_send = models.PositiveIntegerField(blank=True, default=3, validators=[max_value_validator])
 
     def __str__(self):
         return self.user.username + ' ' + str(self.telegram_id)
@@ -93,9 +100,6 @@ class Feedback(models.Model):
     email = models.EmailField(max_length=100)
     message = models.TextField(max_length=300)
     date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural = "Feedback"
 
     def __str__(self):
         return self.name + "_" + self.email

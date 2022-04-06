@@ -360,7 +360,7 @@
         {% endif %}
     </div>
 
-    {% if zero and message %}
+    {% if zero and message and not request.session.alert_seen %}
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -386,10 +386,13 @@
         </div>
         <script>
             $(document).ready(function(){
-                function pop(){
-                    $("#exampleModal").modal('show');
+                if (!Cookies.get('alert_seen', false)){
+                    function pop(){
+                        $("#exampleModal").modal('show');
+                        Cookies.set('alert_seen', true, { expires: 30 })
+                    }
+                    setTimeout(pop, 3000);
                 }
-                setTimeout(pop, 3000);
             });
         </script>
     {% endif %}

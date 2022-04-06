@@ -8,7 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-INSTALLED_APPS.append('sslserver', )
+# INSTALLED_APPS.append('sslserver', )
 
 BASE_DIR = os.getcwd()
 

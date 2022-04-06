@@ -51,21 +51,21 @@ def get_last_update_id(updates):
 
 dic = {"ok": True, "result": [{"update_id": 119993455,
                                "message": {"message_id": 73,
-                                           "from": {"id": 709170277, "is_bot": False, "first_name": "David",
+                                           "from": {"id": 11111111, "is_bot": False, "first_name": "David",
                                                     "username": "KoredeDavid", "language_code": "en"},
-                                           "chat": {"id": 709170277, "first_name": "David", "username": "KoredeDavid",
+                                           "chat": {"id": 11111111, "first_name": "David", "username": "KoredeDavid",
                                                     "type": "private"}, "date": 1592755102, "text": "Anon-David-1"}},
                               {"update_id": 119993456,
                                "message": {"message_id": 208,
-                                           "from": {"id": 709170277, "is_bot": False, "first_name": "David",
+                                           "from": {"id": 11111111, "is_bot": False, "first_name": "David",
                                                     "username": "KoredeDavid", "language_code": "en"},
-                                           "chat": {"id": 709170277, "first_name": "David", "username": "KoredeDavid",
+                                           "chat": {"id": 11111111, "first_name": "David", "username": "KoredeDavid",
                                                     "type": "private"}, "date": 1592776298, "text": "HI LOVE"}},
                               {"update_id": 119993457,
                                "message": {"message_id": 208,
-                                           "from": {"id": 709170277, "is_bot": False, "first_name": "David",
+                                           "from": {"id": 11111111, "is_bot": False, "first_name": "David",
                                                     "username": "KoredeDavid", "language_code": "en"},
-                                           "chat": {"id": 709170277, "first_name": "David", "username": "KoredeDavid",
+                                           "chat": {"id": 11111111, "first_name": "David", "username": "KoredeDavid",
                                                     "type": "private"}, "date": 1592776298, "text": "Anon-wisdom-43"}}]}
 
 

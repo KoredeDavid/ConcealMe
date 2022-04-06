@@ -23,14 +23,11 @@ def get_secret_setting(setting, secrets=secrets):
     except KeyError:
         raise ImproperlyConfigured("Set the {} setting".format(setting))"""
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', "@6n7rh6c=vpc*kf%8+x+vg8w&pu$#bh+*@16p3q@cd*)*rf*5#")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -46,8 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-   
+    # Web apps
     'anon',
+    'anon_api',
+
+    # Third party apps
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    'drf_yasg',
 
 ]
 
@@ -81,7 +85,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'anonymous.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -119,7 +122,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 # Add these new lines
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -134,5 +136,29 @@ AUTHENTICATION_BACKENDS = (
     'anon.backends.CustomAuthentication',
 )
 
-SITE_ID = 1
+# Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+}
 
+# Swagger Settings
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'LOGOUT_URL': 'anon:sign_out'
+
+}
+
+LOGIN_URL = 'anon:sign_in'
+
+SITE_ID = 1

@@ -49,8 +49,7 @@ def get_last_chat_id_and_text(request):
                     update.telegram_id = chat_id
                     update.telegram_switch = True
                     update_anon_user_id = CustomUser.objects.get(username=my_username, anon_user_id=text)
-                    if "-" in str(chat_id):
-                        update_anon_user_id.anon_user_id = f"Anon-{my_username}-{token_urlsafe(10)}"
+                    update_anon_user_id.anon_user_id = f"Anon-{my_username}-{token_urlsafe(10)}"
                     update_anon_user_id.save()
                     print('saved1')
                     update.save()
@@ -95,65 +94,50 @@ def home(request):
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        telegram_form = TelegramForm(request.POST)
         invalid = ['Anonymous', 'Fuck', 'Bitch', 'Login', 'Logout', 'Register', 'Reset', 'Admin', 'Feedback']
-        if form.is_valid() and telegram_form.is_valid():
-            obj_form = form.save(commit=False)
-            if obj_form.username in invalid:
-                messages.error(request, '"{}" cannot be used as a username'.format(obj_form.username))
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+
+            if username in invalid:
+                messages.error(request, '"{}" cannot be used as a username'.format(username))
                 return render(request, 'register.html', {'form': form})
             else:
-                obj_form.save()
-            t_form = telegram_form.save(commit=False)
-            my_username = form.cleaned_data.get('username')
-            user = CustomUser.objects.get(username__iexact=my_username)
-            user_id = CustomUser.objects.get(username__iexact=my_username).id
-            # t_form.anon_user_id = 'Anon-{}-{}-{}'.format(my_username, user_id, token_urlsafe(10))
-            t_form.user = user
-            t_form.telegram_id = '0'
-            t_form.save()
-            password = form.cleaned_data.get('password1')
+                form.save()
+
+            user = CustomUser.objects.get(username__iexact=username)
             login_user = authenticate(username=user, password=password)
             login(request, login_user)
+
             return redirect('anon:dashboard', request.user.username)
     else:
         form = CustomUserCreationForm()
-        # telegram_form = TelegramForm()
     return render(request, 'Register.html', {'form': form})
 
 
 def sign_in(request):
-    # if request.user.is_authenticated:
-    # return render(request, 'home.html')   
-    nexts = request.GET.get('next')
-    print(nexts)
+    next_page = request.GET.get('next')
+    print(next_page)
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+
         if username == "" or password == "":
             messages.error(request, 'Both username/email and password must be filled')
             return render(request, 'login.html')
-        try:
-            username = CustomUser.objects.get(username__iexact=username).username
-        except CustomUser.DoesNotExist:
-            pass
+
         user = authenticate(request=request, username=str(username), password=password)
-        if nexts is None:
-            if user is not None:
-                login(request, user)
-                return redirect('anon:dashboard', request.user.username)
-            else:
-                messages.error(request, 'Guy, your login details are incorrect')
-                return render(request, 'login.html')
-        elif user is not None:
+
+        if user is not None:
             login(request, user)
-            return redirect(nexts)
+            if next_page:
+                return redirect(next_page)
+            else:
+                return redirect('anon:dashboard', request.user.username)
         else:
             messages.error(request, 'Guy, your login details are incorrect')
             return render(request, 'login.html')
-
     else:
-        # form = AuthenticationForm()
         return render(request, 'login.html')
 
 
@@ -169,11 +153,6 @@ def update_profile(request, my_username):
             update = CustomUserChangeForm(request.POST, instance=user)
             if update.is_valid():
                 update.save()
-                """
-                update_anon_user_id = Telegram.objects.get(user__id=user.id)
-                update_anon_user_id.anon_user_id = 'Anon-{}-{}-{}'.format(new_user, user.id, token_urlsafe(10))
-                update_anon_user_id.save()
-                """
                 new_user = CustomUser.objects.get(id=user.id).username
                 messages.success(request, 'Profile updated successfully')
                 return redirect('anon:dashboard', new_user)
@@ -217,13 +196,15 @@ def dashboard(request, my_username):
     if request.user.is_authenticated and request.user == valid:
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         anon_user_id = CustomUser.objects.get(username=user).anon_user_id
-        message = Messages.objects.filter(user=user, archives=False).order_by('-date_sent')
-        zero = Telegram.objects.get(user=user).telegram_id == "0"
-        switch = Telegram.objects.get(user=user).telegram_switch
-        archives = Messages.objects.filter(user=user, archives=True).order_by('-date_sent')
+        message = Messages.objects.filter(user=user, archived=False).order_by('-date_sent')
+        telegram_ = Telegram.objects.get_or_create(user=user)[0]
+        print(telegram_)
+        zero = telegram_.telegram_id == "0"
+        switch = telegram_.telegram_switch
+        archives = Messages.objects.filter(user=user, archived=True).order_by('-date_sent')
         count_archives = archives.count() != 0
         view = user.senders_view
-        url = os.environ.get('WEB_URL', "")
+        url = os.environ.get('WEB_URL', "127.0.0.1:8000/")
         page = request.GET.get('page', 1)
         paginator = Paginator(message, 10)
         try:
@@ -282,11 +263,11 @@ def like_post(request, my_username, message_id):
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
             message = get_object_or_404(Messages, user=user, id=message_id)
-            if message.likes:
-                message.likes = False
+            if message.liked:
+                message.liked = False
                 message.save()
             else:
-                message.likes = True
+                message.liked = True
                 message.save()
             return HttpResponse('Success')
         else:
@@ -305,7 +286,7 @@ def like_post_list(request, my_username):
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
-        favourites = Messages.objects.filter(user=user, likes=True)
+        favourites = Messages.objects.filter(user=user, liked=True)
         page = request.GET.get('page', 1)
         paginator = Paginator(favourites, 10)
         try:
@@ -333,11 +314,11 @@ def archive_post(request, my_username, message_id):
         if request.method == 'POST':
             user_id = user.id
             message = get_object_or_404(Messages, user=user, id=message_id)
-            if message.archives:
-                message.archives = False
+            if message.archived:
+                message.archived = False
                 message.save()
             else:
-                message.archives = True
+                message.archived = True
                 message.save()
             return HttpResponse('Success')
         else:
@@ -356,7 +337,7 @@ def archive_list(request, my_username):
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
-        archives = Messages.objects.filter(user=user, archives=True)
+        archives = Messages.objects.filter(user=user, archived=True)
         page = request.GET.get('page', 1)
         paginator = Paginator(archives, 10)
         try:
@@ -366,7 +347,6 @@ def archive_list(request, my_username):
         except EmptyPage:
             archives = paginator.page(paginator.num_pages)
 
-        # archives = user.archives.all()
         return render(request, 'archives.html', {'message': archives, 'user': user})
     else:
         messages.error(request, 'You are  logged in as {}'.format(request.user.username))
@@ -401,10 +381,11 @@ def telegram(request, my_username):
         raise Http404()
     if request.user.is_authenticated and request.user == valid:
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
-        zero = Telegram.objects.get(user=user).telegram_id == "0"
-        telegram_id = CustomUser.objects.get(username=user).anon_user_id
-        switch = Telegram.objects.get(user=user).telegram_switch
-        choice = Telegram.objects.get(user=user).telegram_choice
+        telegram_ = Telegram.objects.get_or_create(user=user)[0]
+        zero = telegram_.telegram_id == "0"
+        switch = telegram_.telegram_switch
+        telegram_id = user.anon_user_id
+        choice = telegram_.amount_of_messages_to_send
         context = {
             'zero': zero,
             'switch': switch,
@@ -473,7 +454,7 @@ def telegram_choice(request, my_username):
         user = get_object_or_404(CustomUser, username__iexact=request.user.username)
         if request.method == 'POST':
             choice = Telegram.objects.get(user=user)
-            choice.telegram_choice = request.POST['telegram_choice']
+            choice.amount_of_messages_to_send = request.POST['telegram_choice']
             choice.save()
             messages.success(request, "Done")
             return redirect('anon:telegram', my_username)
@@ -493,7 +474,7 @@ def send_message(request, my_username):
 
     view = user.senders_view
     url = os.environ.get('WEB_URL', "")
-    message = Messages.objects.filter(user__username__iexact=my_username, archives=False).order_by('-date_sent')
+    message = Messages.objects.filter(user__username__iexact=my_username, archived=False).order_by('-date_sent')
     page = request.GET.get('page', 1)
     paginator = Paginator(message, 10)
     try:
@@ -505,18 +486,12 @@ def send_message(request, my_username):
 
     if request.method == 'POST':
         form = MyMessages(request.POST)
-        context = {
-            'form': form,
-            'user': user,
-            'view': view,
-            'message': message
-        }
         if form.is_valid():
             f = form.save(commit=False)
             f.user = user
             f.date_sent = timezone.now()
-            f.ip_address = request.META.get("REMOTE_ADDR", '127.0.0.1')
-            f.device = request.META.get("HTTP_USER_AGENT", 'Fucks')
+            f.ip_address = request.META.get("REMOTE_ADDR", 'Unknown')
+            f.device = request.META.get("HTTP_USER_AGENT", 'Unknown')
             f.save()
             messages.success(request,
                              'Message sent to 👑{}'.format(
@@ -525,9 +500,9 @@ def send_message(request, my_username):
             from .telegram import send_telegram_message
             # sent = message[-4]
             # send = list(set(message) ^ set(sent))
-            telegram_choices = Telegram.objects.get(user=user).telegram_choice
+            telegram_choices = Telegram.objects.get(user=user).amount_of_messages_to_send
             if Telegram.objects.get(user=user).telegram_switch:
-                message = Messages.objects.filter(user__username__iexact=my_username, archives=False).order_by(
+                message = Messages.objects.filter(user__username__iexact=my_username, archived=False).order_by(
                     '-date_sent')
                 count = len(message)
                 choice = int(telegram_choices)

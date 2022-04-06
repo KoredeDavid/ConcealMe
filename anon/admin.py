@@ -41,7 +41,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('user', 'ip_address', 'date_sent', 'likes', 'archives')
+    list_display = ('user', 'ip_address', 'date_sent', 'liked', 'archived')
     search_fields = ('user', 'ip_address')
     date_hierarchy = 'date_sent'
 
