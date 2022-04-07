@@ -19,7 +19,6 @@ DATABASES = {
     }
 }
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 EMAIL_HOST = os.environ.get('EMAIL_HOST')  # The host to use for sending email.
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  # Username to use for the SMTP server defined in EMAIL_HOST.
