@@ -3,10 +3,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.http import urlsafe_base64_decode
-from drf_yasg.utils import swagger_auto_schema, swagger_serializer_method
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import get_object_or_404, RetrieveUpdateAPIView, UpdateAPIView
 from rest_framework.pagination import PageNumberPagination
