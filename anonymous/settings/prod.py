@@ -28,7 +28,7 @@ EMAIL_USE_TSL = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = 'mail.concealme.com'
+DEFAULT_FROM_EMAIL = 'mail@concealme.com'
 
 ADMINS = [
     ('ConcealMe', SERVER_EMAIL),
