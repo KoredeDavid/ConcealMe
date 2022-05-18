@@ -2,12 +2,17 @@
 {% load static %}
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="og:title" content="ConcealMe🙈"/>
+        <meta name="og:description" content="ConcealMe🙈 | Here is a website that can allow YOU to receive anonymous messages" />
+        <meta property="og:image" content="https://concealme.herokuapp.com{% static 'assets/img/about-img.jpg' %}"/>
+        <meta property="og:url" content="https://concealme.herokuapp.com/" />
+
       
-        <title>Anonymous</title>
-        <meta content="" name="descriptison">
-        <meta content="" name="keywords">
+        <title>ConcealMe</title>
+
       
 
         <link href="{%  static 'images/download.png' %}" rel="icon">
@@ -24,16 +29,10 @@
         <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
         <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">      
         <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-      
-        <!-- =======================================================
-        * Template Name: Regna - v2.1.0
-        * Template URL: https://bootstrapmade.com/regna-bootstrap-onepage-template/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
-        
-       
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
+
+
     <script type="text/javascript" src="{% static 'js/jquery-3.5.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js' %}"></script>
       
@@ -52,6 +51,7 @@
 					<ul class="nav-menu">				
 						<li><a href="/register">Join</a></li>
 						<li><a href="/login">Login</a></li>                          															
+						<li><a href="/api">API</a></li>                          															
 						<li><a href="#about">About Us</a></li>
 						<li><a href="#services">Features</a></li>
 						<li><a href="#portfolio">Jpegs</a></li>                				
@@ -63,13 +63,13 @@
        
         <!-- ======= Hero Section ======= -->
         <section id="hero">
-          <div class="hero-container" data-aos="zoom-i" data-aos-delay="">
+          <div class="hero-container mx-2" data-aos="zoom-i" data-aos-delay="">
               <!-- ======= About Section ======= -->
                 <section id="about">
                     <div class="container" data-aos="fade-u">
                         <div class="row about-container">
                             
-                            <div class="col-lg-6 content order-lg-1 order-2">
+                            <div class="text-center content order-lg-1 order-2">
                                 {% if messages %}
                                     {% for message in messages %}
                                         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
@@ -79,10 +79,9 @@
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
-                                <h2 class="title" style="color: white;"> About </h2>
-                                <p style="color: white; font-size: 17px;">
+                                <p style="color: white;" class="hero-header">
                                     Here is a website that can allow YOU to <b>receive anonymous messages</b> <i style="color: #008cc0;" class="fas fa-user-secret"></i> from your friends through your own personal link. You can also view your messages using your <b>telegram account</b> <i style="color: #008cc0;" class="fab fa-telegram-plane"></i>  and if you wish, you can <b>allow others view your messages</b><i style="color: #008cc0;" class="far fa-eye"></i>. You can also discover more fun and free features.
-                                </p>                               
+                                </p>
 
                             </div>            
                         </div>
@@ -361,6 +360,6 @@
       
       </body>
       
-      </html>
+</html>
 
 
