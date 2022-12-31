@@ -50,11 +50,11 @@ urlpatterns = [
 
     path('api/', include('anon_api.urls')),
 
-    path('', include('anon.urls')),
+    
 
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
+urlpatterns += path('', include('anon.urls'))
 
