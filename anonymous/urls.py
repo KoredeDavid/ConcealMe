@@ -49,12 +49,18 @@ urlpatterns = [
          name='password_reset_complete'),
 
     path('api/', include('anon_api.urls')),
+    
+    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
+
+    path('', include('anon.urls')),
+    
+    
 
     
 
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-urlpatterns += path('', include('anon.urls'))
+
+
 
