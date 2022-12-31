@@ -59,7 +59,7 @@ urlpatterns = [
     
 
 ]
-urlparterns.insert(-2,   static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns.insert(-2,   static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 
