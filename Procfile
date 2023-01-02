@@ -1,3 +1,3 @@
-web: python manage.py collectstatic --noinput
+web: gunicorn anonymous.wsgi --log-file -
 release: python manage.py migrate
-web: gunicorn anonymous.wsgi --log-file 
+
