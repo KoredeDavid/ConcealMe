@@ -79,7 +79,7 @@ ADMINS = [
 MANAGERS = ADMINS
 
 # Redirects 'http' to 'https'
-SECURE_SSL_REDIRECT = True
+
 
 import dj_database_url
 
