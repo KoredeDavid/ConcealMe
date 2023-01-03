@@ -1,365 +1,372 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <meta name="og:title" content="ConcealMe🙈"/>
-        <meta name="og:description" content="ConcealMe🙈 | Here is a website that can allow YOU to receive anonymous messages" />
-        <meta property="og:image" content="https://concealme.herokuapp.com{% static 'assets/img/about-img.jpg' %}"/>
-        <meta property="og:url" content="https://concealme.herokuapp.com/" />
-
-      
-        <title>ConcealMe</title>
-
-      
-
-        <link href="{%  static 'images/download.png' %}" rel="icon">
-        <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
-      
-
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
-      
-
-        <link rel="stylesheet" href="{% static 'bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
-        <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-        <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-        <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
-        <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">      
-        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="og:title" content="ConcealMe🙈"/>
+    <meta name="og:description" content="ConcealMe🙈 | Here is a website that can allow YOU to receive anonymous messages" />
+    <meta property="og:image" content="https://concealme.up.railway.app{% static 'assets/img/about-img.jpg' %}"/>
+    <meta property="og:url" content="https://concealme.up.railway.app/" />
 
 
-    <script type="text/javascript" src="{% static 'js/jquery-3.5.1.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js' %}"></script>
-      
-      <body>
-      
-        <!-- ======= Header ======= -->
-        <header id="header" class="header-transparent">
-			<div class="container">
-		
-				<div id="logo" class="pull-left">
-				<!-- Uncomment below if you prefer to use a text logo -->
-				<h1><a href="/">Conceal</a></h1>
-				</div>
-				
-				<nav id="nav-menu-container">
-					<ul class="nav-menu">				
-						<li><a href="/register">Join</a></li>
-						<li><a href="/login">Login</a></li>                          															
-						<li><a href="/api">API</a></li>
-						<li><a href="#about">About Us</a></li>
-						<li><a href="#services">Features</a></li>
-						<li><a href="#portfolio">Jpegs</a></li>                				
-						<li><a href="#contact">Contact Us</a></li>
-					</ul>
-				</nav><!-- #nav-menu-container -->			
-			</div>
-        </header><!-- End Header -->
-       
-        <!-- ======= Hero Section ======= -->
-        <section id="hero">
-          <div class="hero-container mx-2" data-aos="zoom-i" data-aos-delay="">
-              <!-- ======= About Section ======= -->
-                <section id="about">
-                    <div class="container" data-aos="fade-u">
-                        <div class="row about-container">
-                            
-                            <div class="text-center content order-lg-1 order-2">
-                                {% if messages %}
-                                    {% for message in messages %}
-                                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                                            <div class="alert alert-danger" role="alert">
-                                                {{ message }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <p style="color: white;" class="hero-header">
-                                    Here is a website that can allow YOU to <b>receive anonymous messages</b> <i style="color: #008cc0;" class="fas fa-user-secret"></i> from your friends through your own personal link. You can also view your messages using your <b>telegram account</b> <i style="color: #008cc0;" class="fab fa-telegram-plane"></i>  and if you wish, you can <b>allow others view your messages</b><i style="color: #008cc0;" class="far fa-eye"></i>. You can also discover more fun and free features.
-                                </p>
+    <title>ConcealMe</title>
 
-                            </div>            
-                        </div>
+
+
+    <link href="{%  static 'images/download.png' %}" rel="icon">
+    <link href="{% static 'images/download.png' %}" rel="apple-touch-icon">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="{% static 'bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+
+<script type="text/javascript" src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap-4.4.1-dist/bootstrap-4.4.1-dist/js/bootstrap.min.js' %}"></script>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header-transparent">
+    <div class="container">
+
+        <div id="logo" class="pull-left">
+            <!-- Uncomment below if you prefer to use a text logo -->
+            <h1><a href="/">Conceal</a></h1>
+        </div>
+
+        <nav id="nav-menu-container">
+            <ul class="nav-menu">
+                <li><a href="/register">Join</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Features</a></li>
+                <li><a href="#portfolio">Jpegs</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav><!-- #nav-menu-container -->
+    </div>
+</header><!-- End Header -->
+
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+    <section id="about">
+        <!-- ======= About Section ======= -->
+        <div class="hero-container" data-aos="zoom-i" data-aos-delay="">
+            <div class="container w-100 mt-5" data-aos="fade-u">
+                <div class="row about-container text-white justify-content-between px-0">
+
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
                     </div>
-                </section><!-- End About Section -->            
-          </div>
-    </section><!-- End Hero Section -->
-        <main id="main">            
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
 
-      
-          <!-- ======= Services Section ======= -->
-          <section id="services" style="margin-top: -30px;">
-            <div class="container mx-auto">
-                <div class="section-header">
-                    <h3 class="section-title">COOL FEATURES</h3>
-                    <p class="section-description"></p>                   
+                    <div class="col-md-6 text-left">
+                        <small class="text-bold" style="font-size: small">ANONYMOUS MESSAGES <i style="color: #008cc0;" class="fas fa-user-secret"></i></small>
+                        <h1 style="text-transform: none !important;" class="mt-2">Receive <span class="font-weight-bold" style="color: #008cc0;" >Anonymous Messages</span>  From Your Friends</h1>
+                        <p class="text-bold mt-2">Receive anonymous messages from your friends through your own personal link. You can also view your messages using your <b>telegram account</b> <i style="color: #008cc0;" class="fab fa-telegram-plane"></i></p>
+
+                        <!--                                        <p>Here is a website that can allow YOU to <b>receive anonymous messages</b> from your friends through your own personal link. You can also view your messages using your <b>telegram account</b> <i style="color: #008cc0;" class="fab fa-telegram-plane"></i>  and if you wish, you can <b>allow others view your messages</b><i style="color: #008cc0;" class="far fa-eye"></i>. You can also discover more fun and free features.</p>-->
+
+                        <a href="/register" class="btn btn-outline-light mr-3">REGISTER</a><a href="/login" class="btn btn-outline-light">LOGIN</a>
+
+                    </div>
+
                 </div>
-                <div class="row mx-auto">
-                    <div class="col-lg-4 mx-auto col-md-6" data-aos="zoom-in">
-                        <div class="box ">
-                            <div class="icon"><i class="fab fa-telegram-plane"></i></div>
-                            <h4 class="title">Telegram</h4>
-                            <p class="description">View your messages using your telegram account or a group chat</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mx-auto col-md-6" data-aos="zoom-in">
-                        <div class="box ">
-                            <div class="icon"><i class="fas fa-user-secret"></i></div>
-                            <h4 class="title">Anonymous</h4>
-                            <p class="description">Receive anonymous messages from your friends</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mx-auto">
-                    <div class="col-lg-4 col-md-6 mx-auto" data-aos="zoom-in">
-                        <div class="box ">
-                            <div class="icon"><i class="far fa-eye"></i></div>
-                            <h4 class="title">View</h4>
-                            <p class="description"> If you wish, you can allow others view your messages</p>
-                        </div>
-                    </div>        
-                    <div class="col-lg-4 col-md-6 mx-auto" data-aos="zoom-in">
-                        <div class="box ">
-                            <div class="icon"><i class="fas fa-camera"></i></div>
-                            <h4 class="title">Fun</h4>
-                            <p class="description">It is good tool to shake tables</p>
-                        </div>      
-                    </div>
-                </div>    
             </div>
-        </section><!-- End Services Section -->
-      
+        </div>
+    </section><!-- End About Section -->
+</section><!-- End Hero Section -->
+<main id="main">
 
 
-          <section  id="portfolio" class="portfolio" style="margin:0px; padding: 0px;">
-            <div data-aos="fade-up" class="row section-title">
-                <div class="col-md-5 mx-auto">
-                    <div id="carouselExampleIndicators" class="carousel slide w-75 mx-auto" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                            <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                        </ol>
-                        <div class="carousel-inner w-75 mx-auto" >
-                            <div class="carousel-item  active" >
-                                <img class="d-block  img-fluid" src=" {% static 'images/home/screen.png' %}"  style="">
-                            </div>
-                            <div class="carousel-item " >
-                                <img class="d-block  img-fluid" src="{% static 'images/home/screen1.png' %}"  style="">
-                            </div>
-                            <div class="carousel-item " >
-                                <img class="d-block  img-fluid" src="{% static 'images/home/screen2.png' %}" style="">
-                            </div>
-                            <div class="carousel-item " >
-                                <img class="d-block  img-fluid" src="{% static 'images/home/screen3.png' %}" style="">
-                            </div>
-                        </div>
-                        <a  class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span style="background-color:black" class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a  class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span style="background-color:black" class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only" >Next</span>
-                        </a>
+    <!-- ======= Services Section ======= -->
+    <section id="services" style="margin-top: -30px;">
+        <div class="container mx-auto">
+            <div class="section-header">
+                <h3 class="section-title">COOL FEATURES</h3>
+                <p class="section-description"></p>
+            </div>
+            <div class="row mx-auto">
+                <div class="col-lg-4 mx-auto col-md-6" data-aos="zoom-in">
+                    <div class="box ">
+                        <div class="icon"><i class="fab fa-telegram-plane"></i></div>
+                        <h4 class="title">Telegram</h4>
+                        <p class="description">View your messages using your telegram account or a group chat</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mx-auto col-md-6" data-aos="zoom-in">
+                    <div class="box ">
+                        <div class="icon"><i class="fas fa-user-secret"></i></div>
+                        <h4 class="title">Anonymous</h4>
+                        <p class="description">Receive anonymous messages from your friends</p>
                     </div>
                 </div>
             </div>
-          </section>
-      
+            <div class="row mx-auto">
+                <div class="col-lg-4 col-md-6 mx-auto" data-aos="zoom-in">
+                    <div class="box ">
+                        <div class="icon"><i class="far fa-eye"></i></div>
+                        <h4 class="title">View</h4>
+                        <p class="description"> If you wish, you can allow others view your messages</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mx-auto" data-aos="zoom-in">
+                    <div class="box ">
+                        <div class="icon"><i class="fas fa-camera"></i></div>
+                        <h4 class="title">Fun</h4>
+                        <p class="description">It is good tool to shake tables</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Services Section -->
 
-      
-          <!-- ======= Contact Section ======= -->
-          <section id="contact">
-            <div class="container">
-              <div class="section-header">
+
+
+    <section  id="portfolio" class="portfolio" style="margin:0px; padding: 0px;">
+        <div data-aos="fade-up" class="row section-title">
+            <div class="col-md-5 mx-auto">
+                <div id="carouselExampleIndicators" class="carousel slide w-75 mx-auto" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        <li style="background-color:black" data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    </ol>
+                    <div class="carousel-inner w-75 mx-auto" >
+                        <div class="carousel-item  active" >
+                            <img class="d-block  img-fluid" src=" {% static 'images/home/screen.png' %}"  style="">
+                        </div>
+                        <div class="carousel-item " >
+                            <img class="d-block  img-fluid" src="{% static 'images/home/screen1.png' %}"  style="">
+                        </div>
+                        <div class="carousel-item " >
+                            <img class="d-block  img-fluid" src="{% static 'images/home/screen2.png' %}" style="">
+                        </div>
+                        <div class="carousel-item " >
+                            <img class="d-block  img-fluid" src="{% static 'images/home/screen3.png' %}" style="">
+                        </div>
+                    </div>
+                    <a  class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span style="background-color:black" class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a  class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span style="background-color:black" class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only" >Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">
                 <h3 class="section-title">Contact</h3>
 
-              </div>
+            </div>
+        </div>
+
+
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-3 col-md-4">
+
+                    <div class="social-links">
+                        <a  target="_blank" href="https://twitter.com/kingkorededavid" class="twitter"><i class="fab fa-twitter"></i></a>
+                        <a target="_blank" href="https://facebook.com/kingkorededavid" class="facebook"><i class="fab fa-facebook"></i></a>
+                        <a target="_blank" href="https://instagram.com/kingkorededavid" class="instagram"><i class="fab fa-instagram"></i></a>
+                        <a  target="_blank" href="https://linkedin.com/in/korededavid" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-5 col-md-8">
+                    {% if messages %}
+                    {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    <div class="form">
+                        <form  method="post" role="form" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Your Name" class="form-control" maxlength="25" required=""  {% if form.name.value %} value="{{form.name.value}}" {% endif %}   id="id_name">
+                                <div class="validate"></div>
+
+                                {% if form.name.errors %}
+                                {% for error in form.name.errors %}
+                                <p  class="alert alert-danger mb-2">{{ error }}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="email" id="id_email"  maxlength="100" required="" placeholder="Your Email"  {% if form.email.value %} value="{{form.email.value}}" {% endif %}  />
+
+                                <div class="validate"></div>
+                                {% if form.email.errors %}
+                                {% for error in form.email.errors %}
+                                <p  class="alert alert-danger mb-2">{{ error }}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="subject" id="id_subject" maxlength="40" required="" placeholder="Subject" {% if form.subject.value %} value="{{form.subject.value}}" {% endif %}  />
+                                <div class="validate"></div>
+
+                                {% if form.subject.errors %}
+                                {% for error in form.subject.errors %}
+                                <p  class="alert alert-danger mb-2">{{ error }}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+
+                                <textarea class="form-control" name="message"  id='id_message' cols="30" rows="5" maxlength="300"  required="" placeholder="Message">{% if form.message.value %}{{form.message.value}}{% endif %}</textarea>
+                                <div class="validate"></div>
+
+                                {% if form.message.errors %}
+                                {% for error in form.message.errors %}
+                                <p  class="alert alert-danger mb-2">{{ error }}</p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="text-center "><button class="btn btn-primary" type="submit">Send Message</button></div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
 
-           
-            <div class="container mt-3">
-              <div class="row justify-content-center">
-      
-                <div class="col-lg-3 col-md-4">        
-      
-                  <div class="social-links">
-                    <a  target="_blank" href="https://twitter.com/kingkorededavid" class="twitter"><i class="fab fa-twitter"></i></a>
-                    <a target="_blank" href="https://facebook.com/kingkorededavid" class="facebook"><i class="fab fa-facebook"></i></a>
-                    <a target="_blank" href="https://instagram.com/kingkorededavid" class="instagram"><i class="fab fa-instagram"></i></a>
-                    <a  target="_blank" href="https://linkedin.com/in/korededavid" class="linkedin"><i class="fab fa-linkedin"></i></a>
-                  </div>
-      
-                </div>
-      
-                <div class="col-lg-5 col-md-8">
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                            <div class="alert alert-success" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                  <div class="form">
-                    <form  method="post" role="form" class="needs-validation" novalidate>
-                      {% csrf_token %}
-                      <div class="form-group">
-                        <input type="text" name="name" placeholder="Your Name" class="form-control" maxlength="25" required=""  {% if form.name.value %} value="{{form.name.value}}" {% endif %}   id="id_name">
-                        <div class="validate"></div>
-                        
-                        {% if form.name.errors %}                               
-                            {% for error in form.name.errors %}
-                                <p  class="alert alert-danger mb-2">{{ error }}</p>
-                            {% endfor %}                                
-                        {% endif %}
-                      </div>
-                      <div class="form-group">
-                        <input type="email" class="form-control" name="email" id="id_email"  maxlength="100" required="" placeholder="Your Email"  {% if form.email.value %} value="{{form.email.value}}" {% endif %}  />
-                        
-                        <div class="validate"></div>                        
-                        {% if form.email.errors %}                               
-                            {% for error in form.email.errors %}
-                                <p  class="alert alert-danger mb-2">{{ error }}</p>
-                            {% endfor %}                                
-                        {% endif %}
-                      </div>
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="subject" id="id_subject" maxlength="40" required="" placeholder="Subject" {% if form.subject.value %} value="{{form.subject.value}}" {% endif %}  />
-                        <div class="validate"></div>
-                        
-                        {% if form.subject.errors %}                               
-                            {% for error in form.subject.errors %}
-                                <p  class="alert alert-danger mb-2">{{ error }}</p>
-                            {% endfor %}                                
-                        {% endif %}
-                      </div>
-                      <div class="form-group">
-                        
-                        <textarea class="form-control" name="message"  id='id_message' cols="30" rows="5" maxlength="300"  required="" placeholder="Message">{% if form.message.value %}{{form.message.value}}{% endif %}</textarea>
-                        <div class="validate"></div>
-                        
-                        {% if form.message.errors %}                               
-                            {% for error in form.message.errors %}
-                                <p  class="alert alert-danger mb-2">{{ error }}</p>
-                            {% endfor %}                                
-                        {% endif %}
-                      </div>
-                      <div class="text-center "><button class="btn btn-primary" type="submit">Send Message</button></div>
-                    </form>
-                  </div>
-                </div>
-      
-              </div>
-      
-            </div>
-          </section><!-- End Contact Section -->
-      
-        </main><!-- End #main -->
-      
-        <!-- ======= Footer ======= -->
-        <footer id="footer">
-          <div class="footer-top">
-            <div class="container">
-                  </div>
-          </div>
-      
-          <div class="container">
-            <div class="copyright">
-              &copy; Copyright <strong>Conceal</strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-              <!--
-              All the links in the footer should remain intact.
-              You can delete the links only if you purchased the pro version.
-              Licensing information: https://bootstrapmade.com/license/
-              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Regna
-            -->
-                <small style="font-size: 10px;" ><a href="https://bootstrapmade.com/">BootstrapMade</a> this beauty</small>
-            </div>
-          </div>
-        </footer><!-- End Footer -->
-      
-        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-         <script type="text/javascript">
+        </div>
+    </section><!-- End Contact Section -->
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="footer-top">
+        <div class="container">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="copyright">
+            &copy; Copyright <strong>Conceal</strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Regna
+          -->
+            <small style="font-size: 10px;" ><a href="https://bootstrapmade.com/">BootstrapMade</a> this beauty</small>
+        </div>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+<script type="text/javascript">
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
-      'use strict';
-      window.addEventListener('load', function() {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function(form) {
-          form.addEventListener('submit', function(event) {
-            if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-          }, false);
-        });
-      }, false);
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
     })();
-    </script>
-        {% if request.user.is_authenticated %}
+</script>
+{% if request.user.is_authenticated %}
 <script>
-	$(document).ready(function(){
-	    function popup(){
-	        $("#exampleModalCenter").modal('show');
-	    }
-	    setTimeout(popup, 2000);
+    $(document).ready(function(){
+        function popup(){
+            $("#exampleModalCenter").modal('show');
+        }
+        setTimeout(popup, 2000);
 
-	});
+    });
 </script>
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Welcome {{request.user}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        You are already logged in as 👑{{request.user}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a href="{% url 'anon:dashboard' request.user %}" type="button" class="btn btn-primary">Continue to dashboard</a>
-      </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Welcome {{request.user}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                You are already logged in as 👑{{request.user}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{% url 'anon:dashboard' request.user %}" type="button" class="btn btn-primary">Continue to dashboard</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endif %}
 
-      
-        <!-- Vendor JS Files -->       
-        
-        <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
-        <script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/superfish/superfish.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/hoverIntent/hoverIntent.js' %}"></script>
-        <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
-        <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
-      
-        <!-- Template Main JS File -->
-        <script src="{% static 'assets/js/main.js' %}"></script>
-      
-      </body>
-      
+
+<!-- Vendor JS Files -->
+
+<script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+<script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/vendor/superfish/superfish.min.js' %}"></script>
+<script src="{% static 'assets/vendor/hoverIntent/hoverIntent.js' %}"></script>
+<script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+<script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
 </html>
 
 

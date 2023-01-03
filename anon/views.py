@@ -36,7 +36,7 @@ def get_last_chat_id_and_text(request):
         if text in CustomUser.objects.all().values_list('anon_user_id', flat=True):
             print('im alive')
             from .telegram import send_telegram_message2
-            url = os.environ.get('WEB_URL', "")
+            url = os.environ.get('WEB_URL', "127.0.0.1:8000/")
             my_username = str(CustomUser.objects.get(anon_user_id=text).username)
             exists = CustomUser.objects.filter(username=my_username,
                                                anon_user_id=text).exists() and Telegram.objects.filter(
